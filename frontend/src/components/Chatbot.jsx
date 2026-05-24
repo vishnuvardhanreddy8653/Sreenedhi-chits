@@ -51,24 +51,24 @@ export default function Chatbot() {
       {/* Floating Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed right-6 bottom-6 bg-purple-600 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform z-50 ${isOpen ? 'hidden' : 'block'}`}
+        className={`fixed left-6 bottom-6 bg-red-600 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform z-50 ${isOpen ? 'hidden' : 'block'}`}
       >
         <MessageSquare size={28} />
       </button>
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed right-6 bottom-6 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5">
-          <div className="bg-purple-600 p-4 flex justify-between items-center text-white">
+        <div className="fixed left-6 bottom-6 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5">
+          <div className="bg-red-600 p-4 flex justify-between items-center text-white">
             <h3 className="font-semibold">Smart Assistant</h3>
-            <button onClick={() => setIsOpen(false)} className="hover:text-purple-200">
+            <button onClick={() => setIsOpen(false)} className="hover:text-red-200">
               <X size={20} />
             </button>
           </div>
           
           <div className="h-64 p-4 overflow-y-auto bg-gray-50 flex flex-col gap-3">
             {messages.map((m, idx) => (
-              <div key={idx} className={`max-w-[85%] p-3 rounded-2xl text-sm ${m.isBot ? 'bg-white border border-gray-100 text-gray-800 self-start rounded-tl-sm' : 'bg-purple-600 text-white self-end rounded-tr-sm'}`}>
+              <div key={idx} className={`max-w-[85%] p-3 rounded-2xl text-sm ${m.isBot ? 'bg-white border border-gray-100 text-gray-800 self-start rounded-tl-sm' : 'bg-red-600 text-white self-end rounded-tr-sm'}`}>
                 {m.text}
               </div>
             ))}
@@ -84,7 +84,7 @@ export default function Chatbot() {
               <button
                 key={i}
                 onClick={() => handleSend(chip.query)}
-                className="flex-shrink-0 text-xs bg-white border border-purple-200 text-purple-700 px-3 py-1.5 rounded-full hover:bg-purple-100 hover:border-purple-400 transition-colors whitespace-nowrap"
+                className="flex-shrink-0 text-xs bg-white border border-red-200 text-red-700 px-3 py-1.5 rounded-full hover:bg-red-100 hover:border-red-400 transition-colors whitespace-nowrap"
               >
                 {chip.label}
               </button>
@@ -98,9 +98,9 @@ export default function Chatbot() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               placeholder="Ask me something..."
-              className="flex-1 bg-gray-50 border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-600/50"
+              className="flex-1 bg-gray-50 border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-600/50"
             />
-            <button onClick={() => handleSend()} className="bg-purple-600 text-white p-2 rounded-full hover:bg-purple-700 transition-colors">
+            <button onClick={() => handleSend()} className="bg-red-600 text-white p-2 rounded-full hover:bg-red-700 transition-colors">
               <Send size={18} />
             </button>
           </div>

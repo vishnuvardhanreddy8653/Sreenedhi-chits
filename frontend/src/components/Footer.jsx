@@ -1,5 +1,5 @@
 import { Phone, MessageCircle, Mail } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 // Inline SVGs for brand icons removed from lucide-react v1.x
 const InstagramIcon = () => (
@@ -15,20 +15,23 @@ const FacebookIcon = () => (
 );
 
 export default function Footer() {
+  const location = useLocation();
+
+  if (location.pathname === '/contact') {
+    return null;
+  }
+
   return (
     <footer className="bg-black py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Top section with Policies and Copyright aligned to match screenshot */}
         <div className="flex flex-col md:flex-row justify-between items-center text-xs font-bold text-white uppercase tracking-wider mb-8">
           <div className="flex gap-6 mb-4 md:mb-0">
-              <Link to="/privacy" className="hover:text-red-500 transition-colors">Privacy Policy</Link>
-              <Link to="/terms" className="hover:text-red-500 transition-colors">Terms & Conditions</Link>
-              <Link to="/faq" className="hover:text-red-500 transition-colors">FAQ's</Link>
-            </div>
+            <Link to="/privacy" className="hover:text-red-500 transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-red-500 transition-colors">Terms & Conditions</Link>
+            <Link to="/faq" className="hover:text-red-500 transition-colors">FAQ's</Link>
+          </div>
         </div>
 
-        {/* Center content */}
         <div className="text-center text-white mb-6">
           <p className="text-sm font-bold tracking-wider mb-2 uppercase">
             ©-2020 SRINIDHI CHITS PVT. LTD.
@@ -38,7 +41,6 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Social Links */}
         <div className="flex justify-center gap-6 mt-8">
           <a href="tel:+916302296910" className="flex items-center justify-center w-10 h-10 bg-white rounded-full text-black hover:bg-red-600 hover:text-white transition-all shadow-md">
             <Phone size={18} />

@@ -45,7 +45,7 @@ export default function AdminDashboard() {
               <input 
                 type="text" 
                 placeholder="Search customers..." 
-                className="w-full pl-10 pr-4 py-2 bg-gray-100 border-transparent rounded-full text-sm focus:border-purple-500 focus:bg-white focus:ring-2 focus:ring-purple-200 transition-all"
+                className="w-full pl-10 pr-4 py-2 bg-gray-100 border-transparent rounded-full text-sm focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-200 transition-all"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -72,8 +72,8 @@ export default function AdminDashboard() {
             title="Active Chits" 
             value="15K+" 
             trend="+8%" 
-            icon={<Briefcase className="text-purple-600" size={24} />} 
-            bg="bg-purple-50"
+            icon={<Briefcase className="text-red-600" size={24} />} 
+            bg="bg-red-50"
           />
           <MetricCard 
             title="Portfolio Value" 
@@ -96,7 +96,7 @@ export default function AdminDashboard() {
           <div className="lg:col-span-2 bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
             <div className="p-6 border-b border-gray-100 flex justify-between items-center">
               <h2 className="font-bold text-gray-900 text-lg">Scheme Performance Portfolio</h2>
-              <button className="text-purple-600 text-sm font-medium hover:text-purple-700 flex items-center gap-1">
+              <button className="text-red-600 text-sm font-medium hover:text-red-700 flex items-center gap-1">
                 View All <ChevronRight size={16} />
               </button>
             </div>
@@ -105,7 +105,7 @@ export default function AdminDashboard() {
                 <div key={scheme.id} className="group">
                   <div className="flex justify-between items-end mb-2">
                     <div>
-                      <h3 className="font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">{scheme.name}</h3>
+                      <h3 className="font-semibold text-gray-900 group-hover:text-red-600 transition-colors">{scheme.name}</h3>
                       <p className="text-xs text-gray-500 mt-1">{scheme.members} Members • Min Inst: ₹{scheme.minInstallment}</p>
                     </div>
                     <div className="text-right">
@@ -114,7 +114,7 @@ export default function AdminDashboard() {
                   </div>
                   <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
                     <div 
-                      className="bg-purple-600 h-2.5 rounded-full" 
+                      className="bg-red-600 h-2.5 rounded-full" 
                       style={{ width: `${scheme.progress}%` }}
                     ></div>
                   </div>
@@ -125,7 +125,7 @@ export default function AdminDashboard() {
 
           {/* Quick Actions / Insights (Spans 1 column) */}
           <div className="bg-gray-900 rounded-3xl shadow-lg p-8 text-white relative overflow-hidden">
-            <div className="absolute -top-12 -right-12 w-40 h-40 bg-purple-500 rounded-full blur-3xl opacity-20"></div>
+            <div className="absolute -top-12 -right-12 w-40 h-40 bg-red-500 rounded-full blur-3xl opacity-20"></div>
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-500 rounded-full blur-3xl opacity-20"></div>
             
             <h2 className="font-bold text-xl mb-2 relative z-10">AI Insights</h2>
@@ -216,7 +216,7 @@ function InsightCard({ text }) {
   return (
     <div className="bg-white/10 p-4 rounded-2xl border border-white/5 backdrop-blur-sm">
       <div className="flex items-start gap-3">
-        <div className="w-2 h-2 rounded-full bg-purple-400 mt-1.5 flex-shrink-0"></div>
+        <div className="w-2 h-2 rounded-full bg-red-400 mt-1.5 flex-shrink-0"></div>
         <p className="text-sm text-gray-200 leading-relaxed">{text}</p>
       </div>
     </div>

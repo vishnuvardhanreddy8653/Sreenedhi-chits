@@ -36,13 +36,32 @@ export default function SchemesPage() {
   return (
     <div className="bg-white">
       {/* Page Hero */}
-      <section className="bg-gray-50 py-16 px-4 text-center border-b border-gray-100">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">
-          Available <span className="text-purple-600">Chit Schemes</span>
-        </h1>
-        <p className="text-gray-600 max-w-xl mx-auto leading-relaxed">
-          Choose from our wide range of plans tailored for every budget. From ₹3,900/month to ₹1,00,000/month — there's a plan for everyone.
-        </p>
+      <section
+        className="relative overflow-hidden min-h-[480px] flex items-center justify-center px-4 text-center border-b border-yellow-500"
+        style={{
+          background: 'radial-gradient(circle at top, #ffe149 0%, #ffe536 55%, #ffd900 100%)',
+        }}
+      >
+        <div
+          className="absolute inset-0 opacity-90"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.08), rgba(255,255,255,0.08)), url('https://srinidhichits.com/assests/about%20bg.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        <div className="relative z-10 max-w-3xl">
+          <h1 className="text-[56px] md:text-[80px] font-black tracking-[4px] leading-none mb-5 text-white drop-shadow-[15px_30px_20px_rgba(0,0,0,0.35)]">
+            AVAILABLE CHITS
+          </h1>
+          <p className="text-gray-900 max-w-2xl mx-auto leading-none text-[24px] md:text-[30px] font-bold">
+            Choose from our wide range of plans tailored for every budget.
+          </p>
+          <p className="text-gray-900 max-w-2xl mx-auto text-[24px] md:text-[30px] font-bold mt-2">
+            From ₹3,900/month to ₹1,00,000/month — there's a plan for everyone.
+          </p>
+        </div>
       </section>
 
       {/* Filter Bar */}
@@ -54,7 +73,7 @@ export default function SchemesPage() {
               key={f}
               onClick={() => setFilter(f)}
               className={`px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-colors ${
-                filter === f ? 'bg-purple-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                filter === f ? 'bg-red-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
               {f}
@@ -78,7 +97,7 @@ export default function SchemesPage() {
               {/* Card Header */}
               <div className="p-6 border-b border-gray-50">
                 <div className="flex justify-between items-start mb-4">
-                  <div className="flex items-center gap-2 text-purple-600 bg-purple-50 px-3 py-1.5 rounded-full">
+                  <div className="flex items-center gap-2 text-red-600 bg-red-50 px-3 py-1.5 rounded-full">
                     <Clock size={14} />
                     <span className="text-sm font-bold">{scheme.months} Months</span>
                   </div>
@@ -113,7 +132,7 @@ export default function SchemesPage() {
 
               {/* CTA */}
               <div className="px-6 pb-6">
-                <button className="w-full bg-gray-900 text-white py-3 rounded-xl font-semibold hover:bg-purple-600 transition-colors flex items-center justify-center gap-2 group-hover:bg-purple-600">
+                <button className="w-full bg-gray-900 text-white py-3 rounded-xl font-semibold hover:bg-red-600 transition-colors flex items-center justify-center gap-2 group-hover:bg-red-600">
                   Enroll in This Plan <ChevronRight size={16}/>
                 </button>
               </div>

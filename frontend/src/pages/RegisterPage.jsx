@@ -42,7 +42,7 @@ export default function RegisterPage() {
         {/* Card */}
         <div className="bg-white rounded-3xl shadow-lg border border-gray-100 p-8">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <User size={32} />
             </div>
             <h2 className="text-3xl font-bold text-gray-900">Create Account</h2>
@@ -69,7 +69,7 @@ export default function RegisterPage() {
                 <input
                   type="text" name="name" value={form.name}
                   onChange={handleChange} required
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-600/20 focus:border-purple-600 transition-all outline-none"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-red-600/20 focus:border-red-600 transition-all outline-none"
                   placeholder="Ramesh Kumar"
                 />
               </div>
@@ -83,7 +83,7 @@ export default function RegisterPage() {
                 <input
                   type="email" name="email" value={form.email}
                   onChange={handleChange} required
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-600/20 focus:border-purple-600 transition-all outline-none"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-red-600/20 focus:border-red-600 transition-all outline-none"
                   placeholder="you@example.com"
                 />
               </div>
@@ -98,7 +98,7 @@ export default function RegisterPage() {
                   type={showPassword ? 'text' : 'password'}
                   name="password" value={form.password}
                   onChange={handleChange} required
-                  className="w-full pl-10 pr-12 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-600/20 focus:border-purple-600 transition-all outline-none"
+                  className="w-full pl-10 pr-12 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-red-600/20 focus:border-red-600 transition-all outline-none"
                   placeholder="Min. 8 characters"
                 />
                 <button type="button" onClick={() => setShowPassword(!showPassword)}
@@ -117,7 +117,7 @@ export default function RegisterPage() {
                   type={showPassword ? 'text' : 'password'}
                   name="confirmPassword" value={form.confirmPassword}
                   onChange={handleChange} required
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-purple-600/20 focus:border-purple-600 transition-all outline-none"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-red-600/20 focus:border-red-600 transition-all outline-none"
                   placeholder="Repeat your password"
                 />
               </div>
@@ -125,7 +125,7 @@ export default function RegisterPage() {
 
             <button
               type="submit" disabled={loading}
-              className="w-full bg-purple-600 text-white font-semibold py-3 rounded-xl hover:bg-purple-700 transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+              className="w-full bg-red-600 text-white font-semibold py-3 rounded-xl hover:bg-red-700 transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
             >
               {loading ? 'Creating Account...' : 'Create Free Account'}
             </button>
@@ -133,7 +133,7 @@ export default function RegisterPage() {
 
           <div className="mt-8 text-center text-sm text-gray-600">
             Already have an account?{' '}
-            <Link to="/login" className="text-purple-600 font-semibold hover:underline">Sign In</Link>
+            <Link to="/login" className="text-red-600 font-semibold hover:underline">Sign In</Link>
           </div>
         </div>
       </div>

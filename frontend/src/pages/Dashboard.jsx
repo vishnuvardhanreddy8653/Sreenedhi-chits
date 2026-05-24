@@ -79,9 +79,9 @@ function OverviewTab() {
   return (
     <div className="space-y-6">
       <div className="grid md:grid-cols-3 gap-6">
-        <div className="bg-purple-600 text-white p-6 rounded-3xl shadow-lg relative overflow-hidden">
+        <div className="bg-red-600 text-white p-6 rounded-3xl shadow-lg relative overflow-hidden">
           <div className="absolute top-0 right-0 p-4 opacity-20"><CreditCard size={64}/></div>
-          <p className="text-purple-200 text-sm font-medium mb-1">Total Active Investments</p>
+          <p className="text-red-100 text-sm font-medium mb-1">Total Active Investments</p>
           <h3 className="text-3xl font-bold">₹ 45,000</h3>
         </div>
         <div className="bg-white border border-gray-100 p-6 rounded-3xl shadow-sm">
@@ -192,18 +192,18 @@ function LoansTab() {
       </div>
 
       <div className="bg-gray-900 text-white p-8 rounded-3xl shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500 blur-3xl opacity-30 rounded-full"></div>
-        <div className="inline-block px-3 py-1 bg-yellow-500/20 text-yellow-300 border border-yellow-500/30 rounded-full text-xs font-bold mb-4">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-red-500 blur-3xl opacity-30 rounded-full"></div>
+        <div className="inline-block px-3 py-1 bg-red-500/20 text-red-200 border border-red-500/30 rounded-full text-xs font-bold mb-4">
           LOYAL CUSTOMER EXCLUSIVE
         </div>
         <h2 className="text-xl font-bold mb-2">Loyalty Loan Offer</h2>
         <p className="text-gray-400 mb-6 text-sm">Because you've been with us for over 1 year with perfect payment history.</p>
-        <div className="text-4xl font-extrabold mb-2 text-yellow-400">1.8% <span className="text-lg text-gray-400 font-medium">interest rate</span></div>
+        <div className="text-4xl font-extrabold mb-2 text-red-300">1.8% <span className="text-lg text-gray-400 font-medium">interest rate</span></div>
         <ul className="space-y-3 mb-8 mt-6">
-          <li className="flex items-center gap-2 text-sm text-gray-300"><CheckCircle size={16} className="text-yellow-400"/> Lowest rate available</li>
-          <li className="flex items-center gap-2 text-sm text-gray-300"><CheckCircle size={16} className="text-yellow-400"/> Higher lending limits</li>
+          <li className="flex items-center gap-2 text-sm text-gray-300"><CheckCircle size={16} className="text-red-300"/> Lowest rate available</li>
+          <li className="flex items-center gap-2 text-sm text-gray-300"><CheckCircle size={16} className="text-red-300"/> Higher lending limits</li>
         </ul>
-        <button className="w-full bg-yellow-500 text-gray-900 py-3 rounded-full font-bold hover:bg-yellow-400 transition-colors">
+        <button className="w-full bg-red-500 text-white py-3 rounded-full font-bold hover:bg-red-400 transition-colors">
           Claim Loyalty Loan
         </button>
       </div>
@@ -266,7 +266,7 @@ function TabButton({ active, onClick, icon, label }) {
     <button 
       onClick={onClick}
       className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-        active ? 'bg-gray-900 text-white shadow-sm' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
+        active ? 'bg-red-600 text-white shadow-sm' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
       }`}
     >
       {icon} {label}
