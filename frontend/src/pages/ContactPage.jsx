@@ -572,7 +572,7 @@ export default function ContactPage() {
           <p>©-2020 SRINIDHI CHITS PVT. LTD.</p>
           <p style={{ marginTop: 8 }}>
             HAND CRAFTED WITH <span style={{ color: '#fe2121' }}>❤️</span> BY{' '}
-            <a href="http://teamup.ink/">Team- Up!</a>
+            <a href="http://teamup.ink/">Team- <span style={{ color: '#fe2121' }}>Up!</span></a>
           </p>
         </div>
 

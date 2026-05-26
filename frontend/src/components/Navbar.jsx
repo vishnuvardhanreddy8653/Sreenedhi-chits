@@ -1,10 +1,12 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, LogOut, LayoutDashboard } from 'lucide-react';
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../assets/logo.png';
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [hoveredTab, setHoveredTab] = useState(null);
   const location = useLocation();
   const hideCTA = ['/', '/schemes', '/about', '/contact', '/login', '/register'].includes(location.pathname);
   const navigate = useNavigate();
@@ -37,31 +39,55 @@ export default function Navbar() {
 
           {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center space-x-6">
-            {navLinks.map(link => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className="relative inline-flex items-center text-gray-900 hover:text-red-600 text-sm font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 after:absolute after:left-0 after:-bottom-1 after:h-0.5 after:w-0 after:bg-red-600 after:transition-all after:duration-300 hover:after:w-full"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {[...navLinks, { to: isLoggedIn ? '/dashboard' : '/register', label: isLoggedIn ? 'Dashboard' : 'Get Started' }].map(link => {
+              const isActive = location.pathname === link.to;
+              return (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  onMouseEnter={() => setHoveredTab(link.to)}
+                  onMouseLeave={() => setHoveredTab(null)}
+                  className={`relative px-1 py-2 inline-flex items-center text-[18px] font-extrabold transition-colors duration-300 ease-out z-10 ${
+                    isActive ? 'text-white' : 'text-gray-900'
+                  }`}
+                  style={isActive ? { textShadow: '0px 0px 10px rgba(0, 0, 0, 0.6)' } : {}}
+                >
+                  {link.label}
+                  {isActive ? (
+                    <div className="absolute left-0 w-full h-[6px] bg-[#fe2121] -z-10" style={{ top: '56%' }} />
+                  ) : (
+                    hoveredTab === link.to && (
+                      <motion.div
+                        className="absolute left-0 h-[6px] bg-[#fe2121] -z-10"
+                        style={{ top: '56%' }}
+                        initial={{ width: 0 }}
+                        animate={{ width: '100%' }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                      />
+                    )
+                  )}
+                </Link>
+              );
+            })}
 
-            {isLoggedIn ? (
-              <div className="flex items-center gap-3">
-                <Link to="/dashboard" className="flex items-center gap-1.5 text-gray-900 border border-gray-900 px-4 py-2 rounded-full text-sm font-bold hover:border-red-600 hover:text-red-600 transition-all duration-300 ease-out hover:-translate-y-0.5">
-                  <LayoutDashboard size={15}/> Dashboard
-                </Link>
-                <button onClick={handleLogout} className="flex items-center gap-1.5 bg-red-50 text-red-600 px-4 py-2 rounded-full text-sm font-bold hover:bg-red-100 transition-all duration-300 ease-out hover:-translate-y-0.5">
-                  <LogOut size={15}/> Logout
-                </button>
-              </div>
-            ) : (
-              <div className="flex items-center gap-3">
-                <Link to="/register" className="bg-red-600 text-white px-5 py-2 rounded-full hover:bg-red-700 transition-all duration-300 ease-out font-bold text-sm shadow-md hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(220,38,38,0.35)]">
-                  Get Started
-                </Link>
-              </div>
+            {isLoggedIn && (
+              <button
+                onClick={handleLogout}
+                onMouseEnter={() => setHoveredTab('logout')}
+                onMouseLeave={() => setHoveredTab(null)}
+                className="relative px-1 py-2 inline-flex items-center text-[18px] font-extrabold transition-colors duration-300 ease-out z-10 text-gray-900"
+              >
+                Logout
+                {hoveredTab === 'logout' && (
+                  <motion.div
+                    className="absolute left-0 h-[6px] bg-[#fe2121] -z-10"
+                    style={{ top: '56%' }}
+                    initial={{ width: 0 }}
+                    animate={{ width: '100%' }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                  />
+                )}
+              </button>
             )}
           </div>
 
