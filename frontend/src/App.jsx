@@ -13,6 +13,7 @@ import ContactPage from './pages/ContactPage';
 import FaqsPage from './pages/FaqsPage';
 import TermsPage from './pages/TermsPage';
 import PrivacyPage from './pages/PrivacyPage';
+import WorkPage from './pages/WorkPage';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <Route path="/faq" element={<FaqsPage />} />
             <Route path="/terms" element={<TermsPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/work" element={<WorkPage />} />
           </Routes>
         </main>
         <Footer />

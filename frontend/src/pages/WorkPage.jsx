@@ -128,63 +128,67 @@ const workPageStyles = `
   }
 
   .work-scheme {
-    width: 868.8px;
-    max-width: calc(100% - 40px);
+    width: 100%;
     margin: 0 auto;
     padding: 0 0 120px;
   }
 
   .work-card {
     position: relative;
+    height: 450px;
+    width: 80%;
+    max-width: 1000px;
     margin: 200px auto;
-    width: 695.037px;
-    max-width: 100%;
-    min-height: 450px;
-    background: #ffffff;
-    box-shadow: rgba(254, 33, 33, 0.1) 10px 10px 60px 0px;
-    display: grid;
-    grid-template-columns: 540px minmax(140px, 1fr);
-    align-items: start;
-    gap: 0;
-    overflow: visible;
+    background-color: #ffffff;
+    box-shadow: 10px 10px 60px rgba(254, 33, 33, 0.1);
+    display: block; /* Removing the restrictive grid */
   }
 
   .work-card-thumb {
+    float: left;
     position: relative;
-    top: -30px;
     left: 30px;
-    width: 540px;
+    top: -30px;
     height: 360px;
+    width: 540px;
     overflow: hidden;
+    background: #fff;
+    box-shadow: 10px 18px 80px 0px rgba(87, 86, 82, 0.3);
   }
 
   .work-card-thumb img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
-    box-shadow: rgba(87, 86, 82, 0.3) 10px 18px 80px 0px;
   }
 
   .work-card-copy {
-    padding: 18px 12px 0 16px;
+    margin-left: 590px;
+    margin-right: 20px;
+    padding-top: 15px;
     box-sizing: border-box;
   }
 
   .work-card-copy h1 {
     margin: 0;
     padding-top: 15px;
-    text-align: center;
-    font-size: 20.8px;
+    text-align: left; /* Original site has text-align left for titles */
+    font-size: 1.3rem;
     font-weight: 700;
-    color: #111111;
+    color: #000;
+  }
+
+  .work-separator {
+    margin-top: 10px;
+    border-top: 1px solid #C3C3C3;
   }
 
   .work-card-copy p {
-    margin: 15px 0 0;
+    margin: 10px 0 0;
     padding-top: 0;
-    font-size: 15.2px;
-    line-height: 22.8px;
+    font-size: 0.95rem;
+    line-height: 150%;
     font-weight: 200;
     color: #666666;
     text-align: justify;
@@ -192,30 +196,28 @@ const workPageStyles = `
 
   .work-card-num {
     position: absolute;
-    top: 15px;
-    left: 585.037px;
-    width: 115px;
-    text-align: center;
-    font-size: 96px;
-    line-height: 1;
+    left: 40px;
+    bottom: -110px;
+    font-size: 6rem;
     font-weight: 700;
     color: rgba(0, 0, 0, 0.5);
     pointer-events: none;
+    line-height: 1;
+    margin: 0;
   }
 
   .work-card-fab {
     position: absolute;
+    right: 50px;
     bottom: -20px;
-    left: 585.037px;
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: #636363;
+    background: rgb(99, 99, 99);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     color: #ffffff;
-    box-shadow: none;
     text-decoration: none;
   }
 
@@ -225,6 +227,10 @@ const workPageStyles = `
     stroke: currentColor;
     fill: none;
     stroke-width: 3;
+  }
+
+  .work-card-fab:hover {
+    box-shadow: 2px -5px 23px rgba(0, 0, 0, 0.2);
   }
 
   .work-card-fab.check {
@@ -352,11 +358,16 @@ const workPageStyles = `
   }
 `;
 
+import img11 from '../assets/how/11.png';
+import img12 from '../assets/how/12.png';
+import img13 from '../assets/how/13.png';
+import img14 from '../assets/how/14.png';
+
 const workCards = [
   {
     id: 'bottom1',
     title: 'Chit Subscription',
-    image: 'https://srinidhichits.com/assests/how/11.png',
+    image: img11,
     paragraphs: [
       'A ChitGroup is formed by the chitfund company with the chit Value and No. of Subscribers. (Which doesn’t change throughout the chit completion)',
       'The amount to be saved every month by the Subscriber is equals to Chit value divided by No of person’s i.e. 10,00,000/50 = 20,000.',
@@ -369,7 +380,7 @@ const workCards = [
   {
     id: '2',
     title: 'Bid Amount',
-    image: 'https://srinidhichits.com/assests/how/12.png',
+    image: img12,
     paragraphs: [
       'The Subscriber does not always pay the entire Subscription amount every month there will be some amount deducted as Divedend.',
       'The maximum bid permitted ranges from 30-40% from chit value. i.e., The maximum deduction will be around 30% - 40% of chit value.',
@@ -382,7 +393,7 @@ const workCards = [
   {
     id: '3',
     title: 'Dividend',
-    image: 'https://srinidhichits.com/assests/how/13.png',
+    image: img13,
     paragraphs: [
       'The Company Charges 5% of chit value as commission from example that would amount to 50,000. This amount is deducted from Chit Discount i.e. 3,50,000-50,000=3,00,000. This amount is equally distribution among the subscribers of the group.',
       'In the example, 3,00,000 would be divided equally among 50 subscribers. Each subscriber would get a discount of 3,00,000/50 = 6000. This amount is known as Dividend. In the next month, all subscribers would have to only pay 14,000 instead of 20,000. This is because they have earned a chit discount of 6000.',
@@ -394,7 +405,7 @@ const workCards = [
   {
     id: 'bottom',
     title: 'Advantages of ChitFunds',
-    image: 'https://srinidhichits.com/assests/how/14.png',
+    image: img14,
     paragraphs: [
       'Chit fund gives the flexibility to borrow and save.',
       'You can get a chance to borrow money just by paying first monthly installment.',
@@ -402,7 +413,6 @@ const workCards = [
       'You need not disclose for which purpose you will be using the prize money.',
     ],
     number: '04',
-    nextHref: '#bottom',
     icon: 'check',
   },
 ];
@@ -437,76 +447,68 @@ export default function WorkPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const scrollToSection = (e, id) => {
+    e.preventDefault();
+    const target = document.getElementById(id);
+    if (target) {
+      const yOffset = -80;
+      const y = target.getBoundingClientRect().top + window.scrollY + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="work-page-shell">
       <style>{workPageStyles}</style>
-
-      <nav className="work-nav">
-        <div className="work-nav-inner">
-          <Link to="/" className="work-logo">
-            <img src={logo} alt="Srinidhi Chits" />
-          </Link>
-          <div className="work-menu">
-            <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/about">About</Link></li>
-              <li><Link to="/schemes">Available Chits</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
-              <li><Link to="/work" className="active">How it Works ?</Link></li>
-              <li><Link to="/register" className="work-nav-cta">Get Started</Link></li>
-            </ul>
-          </div>
-        </div>
-      </nav>
 
       <section className="work-hero">
         <div className="work-hero-content">
           <h1>How CHITFUNDS Work</h1>
           <p>Anyone can dream up great ideas,</p>
           <p>but an idea is nothing until it's realized.</p>
-          <a href="#bottom" className="work-cta">Go Check That Out</a>
+          <a 
+            href="#card-0" 
+            className="work-cta"
+            onClick={(e) => scrollToSection(e, 'card-0')}
+          >
+            Go Check That Out
+          </a>
         </div>
       </section>
 
       <section id="bottom" className="work-scheme">
-        {workCards.map((card, index) => (
-          <article className="work-card" key={card.id} id={index === 0 ? 'bottom1' : card.id}>
-            <div className="work-card-thumb">
-              <img src={card.image} alt={card.title} />
-            </div>
+        {workCards.map((card, index) => {
+          const nextCardId = index < workCards.length - 1 ? `card-${index + 1}` : 'bottom';
+          
+          return (
+            <article className="work-card" key={card.id} id={`card-${index}`}>
+              <div className="work-card-thumb">
+                <img src={card.image} alt={card.title} />
+              </div>
 
-            <div className="work-card-copy">
-              <h1>{card.title}</h1>
-              {card.paragraphs.map((paragraph, paragraphIndex) => (
-                <p key={`${card.id}-${paragraphIndex}`}>{paragraph}</p>
-              ))}
-            </div>
+              <div className="work-card-copy">
+                <h1>{card.title}</h1>
+                <div className="work-separator" />
+                {card.paragraphs.map((paragraph, paragraphIndex) => (
+                  <p key={`${card.id}-${paragraphIndex}`}>
+                    {paragraphIndex + 1}. &ensp; {paragraph}
+                  </p>
+                ))}
+              </div>
 
-            <div className="work-card-num">{card.number}</div>
+              <h5 className="work-card-num">{card.number}</h5>
 
-            <a href={card.nextHref} className={`work-card-fab ${card.icon === 'check' ? 'check' : ''}`}>
-              {card.icon === 'check' ? <CheckIcon /> : <DownIcon />}
-            </a>
-          </article>
-        ))}
+              <a 
+                href={`#${nextCardId}`} 
+                className={`work-card-fab ${card.icon === 'check' ? 'check' : ''}`}
+                onClick={(e) => scrollToSection(e, nextCardId)}
+              >
+                {card.icon === 'check' ? <CheckIcon /> : <DownIcon />}
+              </a>
+            </article>
+          );
+        })}
       </section>
-
-      <footer className="work-footer">
-        <div className="work-footer-inner">
-          <div className="work-footer-links">
-            <a href="https://srinidhichits.com/policy.html" target="_blank" rel="noreferrer">PRIVACY POLICY</a>
-            <a href="https://srinidhichits.com/terms.html" target="_blank" rel="noreferrer">TERMS & CONDITIONS</a>
-            <a href="https://srinidhichits.com/faq.html" target="_blank" rel="noreferrer">FAQ's</a>
-          </div>
-
-          <div className="work-footer-copy">
-            <p>©-2020 SRINIDHI CHITS PVT. LTD.</p>
-            <p>
-              HAND CRAFTED WITH <strong>❤</strong> BY <a href="http://teamup.ink/" target="_blank" rel="noreferrer">Team-<strong>Up!</strong></a>
-            </p>
-          </div>
-        </div>
-      </footer>
 
       <button
         type="button"
