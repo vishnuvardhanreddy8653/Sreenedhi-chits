@@ -60,12 +60,12 @@ export default function AnimatedTelanganaMap({ onMarkerHover, onMarkerLeave, act
         
         return (
           <g key={branch.id} style={{ cursor: 'pointer' }} onMouseEnter={() => onMarkerHover(branch)} onMouseLeave={onMarkerLeave}>
-            {/* Pulsing red glow circle */}
+            {/* Pulsing glow circle */}
             <motion.circle
               cx={cx}
               cy={cy}
               r={isActive ? RADIUS_OUTER_ACTIVE : RADIUS_OUTER}
-              fill="#ff4e50"
+              fill="#ffd900"
               filter="url(#glow)"
               animate={{
                 scale: [1, 1.2, 1],
@@ -77,13 +77,13 @@ export default function AnimatedTelanganaMap({ onMarkerHover, onMarkerLeave, act
                 delay: index * 0.2,
               }}
             />
-            {/* Inner red/white circle */}
+            {/* Inner circle */}
             <motion.circle
               cx={cx}
               cy={cy}
               r={RADIUS_INNER}
-              fill="#ffffff"
-              stroke="#ff4e50"
+              fill="#fe2121"
+              stroke="#ffd900"
               strokeWidth={STROKE_WIDTH}
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}

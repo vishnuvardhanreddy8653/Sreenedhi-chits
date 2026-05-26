@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import AnimatedTelanganaMap from '../components/AnimatedTelanganaMap';
 import { branches } from '../data/branches';
@@ -7,6 +7,44 @@ const defaultBranch = branches[0];
 
 export default function ContactPage() {
   const [activeBranch, setActiveBranch] = useState(defaultBranch);
+  const hoverTimeout = useRef(null);
+  const mousePos = useRef({ x: 0, y: 0 });
+  const pendingBranchId = useRef(null);
+
+  const handleMouseMove = (e, branch) => {
+    const dx = Math.abs(e.clientX - mousePos.current.x);
+    const dy = Math.abs(e.clientY - mousePos.current.y);
+    
+    // Only process if it's a real physical mouse movement
+    if (dx > 2 || dy > 2) {
+      mousePos.current = { x: e.clientX, y: e.clientY };
+      
+      if (activeBranch.id !== branch.id) {
+        if (pendingBranchId.current !== branch.id) {
+          pendingBranchId.current = branch.id;
+          if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+          hoverTimeout.current = setTimeout(() => {
+            setActiveBranch(branch);
+          }, 150);
+        }
+      } else {
+        pendingBranchId.current = null;
+        if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+      }
+    }
+  };
+
+  const handleClick = (branch) => {
+    if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+    pendingBranchId.current = null;
+    setActiveBranch(branch);
+  };
+
+  const handleMouseLeaveList = () => {
+    if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+    pendingBranchId.current = null;
+    setActiveBranch(defaultBranch);
+  };
 
   return (
     <div className="contact-page">
@@ -75,11 +113,11 @@ export default function ContactPage() {
           letter-spacing: 0.8px;
           text-decoration: none;
           box-shadow: 5px 6px 20px rgba(250, 12, 12, 0.78);
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .contact-hero__button:hover {
-          transform: translateY(-1px);
+          transform: translateY(-2px);
           box-shadow: 5px 8px 24px rgba(250, 12, 12, 0.9);
         }
 
@@ -224,11 +262,13 @@ export default function ContactPage() {
           max-height: 760px;
           overflow-y: auto;
           padding-right: 6px;
+          padding-bottom: 24px;
           display: flex;
           flex-direction: column;
           gap: 14px;
           scrollbar-width: thin;
           scrollbar-color: #fe2121 rgba(255, 217, 0, 0.2);
+          scrollbar-gutter: stable;
         }
 
         .contact-scroll-stack::-webkit-scrollbar {
@@ -252,12 +292,11 @@ export default function ContactPage() {
           border: 1px solid rgba(17, 17, 17, 0.06);
           box-shadow: 0 10px 28px rgba(17, 17, 17, 0.07);
           cursor: pointer;
-          transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+          transition: box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
         }
 
         .contact-branch-card:hover,
         .contact-branch-card--active {
-          transform: translateY(-2px);
           border-color: rgba(254, 33, 33, 0.28);
           box-shadow: 0 18px 36px rgba(254, 33, 33, 0.16);
           background: linear-gradient(180deg, #fffdf8 0%, #fff8e8 100%);
@@ -288,6 +327,12 @@ export default function ContactPage() {
           line-height: 1.1;
           text-transform: uppercase;
           letter-spacing: 0.5px;
+          transition: color 0.3s ease;
+        }
+
+        .contact-branch-card:hover h3,
+        .contact-branch-card--active h3 {
+          color: #fe2121;
         }
 
         .contact-divider {
@@ -472,7 +517,6 @@ export default function ContactPage() {
                 <AnimatedTelanganaMap
                   activeId={activeBranch.id}
                   onMarkerHover={(branch) => setActiveBranch(branch)}
-                  onMarkerLeave={() => setActiveBranch(defaultBranch)}
                 />
               </div>
             </div>
@@ -502,17 +546,18 @@ export default function ContactPage() {
               </p>
             </div>
 
-            <div className="contact-scroll-stack">
+            <div 
+              className="contact-scroll-stack"
+              onMouseLeave={handleMouseLeaveList}
+            >
               {branches.map((branch) => {
                 const isActive = activeBranch.id === branch.id;
                 return (
                   <motion.article
                     key={branch.id}
                     className={`contact-branch-card ${isActive ? 'contact-branch-card--active' : ''}`}
-                    onMouseEnter={() => setActiveBranch(branch)}
-                    onMouseLeave={() => setActiveBranch(defaultBranch)}
-                    whileHover={{ y: -2 }}
-                    transition={{ duration: 0.2 }}
+                    onMouseMove={(e) => handleMouseMove(e, branch)}
+                    onClick={() => handleClick(branch)}
                   >
                     <div className="contact-card-top" style={{ flexDirection: 'row', alignItems: 'center', gap: '16px', marginBottom: 0 }}>
                       <motion.div 
@@ -538,6 +583,7 @@ export default function ContactPage() {
                         opacity: isActive ? 1 : 0,
                         marginTop: isActive ? 16 : 0
                       }}
+                      transition={{ duration: 0.3, ease: 'easeInOut' }}
                       style={{ overflow: 'hidden' }}
                     >
                       <div className="contact-divider" style={{ marginTop: 0 }} />
