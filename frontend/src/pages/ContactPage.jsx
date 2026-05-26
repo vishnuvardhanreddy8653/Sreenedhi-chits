@@ -1,178 +1,33 @@
-const branches = [
-  {
-    name: 'KARIMNAGAR',
-    img: 'https://srinidhichits.com/assests/12.jpg',
-    details: [
-      'E.ASHOK REDDDY',
-      'K.CHANDRA REDDY',
-      'H NO 2-7-384, 2nd Floor,',
-      'OPP:POLICE PARADE GROUND,',
-      'BUS-STAND ROAD,',
-      'KARIMNAGAR-505001,',
-      'Ph.no:0878-2251999',
-    ],
-  },
-  {
-    name: 'PEDDAPALLY',
-    img: 'https://srinidhichits.com/assests/peddapalli.jpg',
-    details: [
-      'B.JAYAPAL REDDY',
-      'H.SRINIVAS REDDY',
-      'H NO 1-2-67/D, 1st Floor,',
-      'PRAGATHI NAGAR,',
-      'MAIN ROAD PEDDAPALLY,',
-      'Karimnagar,',
-      'Ph.no:08728-222055',
-    ],
-  },
-  {
-    name: 'HUZURABAD',
-    img: 'https://srinidhichits.com/assests/HZB.jpg',
-    details: [
-      'G.SRINIVAS REDDY',
-      'H NO 12-371, 1st Floor,',
-      'WARANGAL ROAD,',
-      'HUZURABAD-505468,',
-      'Karimnagar,',
-      'Ph.no:08727-252166',
-    ],
-  },
-  {
-    name: 'JANGOAN',
-    img: 'https://srinidhichits.com/assests/janagon.jpg',
-    details: [
-      'N.YELLA REDDY',
-      'B.RAMESH',
-      'HNO 2-8-1/B,',
-      'HYD ROAD,SRINAGAR COLONY,',
-      'JANGOAN-506167,',
-      'WARANGAL,',
-      'Ph.no:08716-224225',
-    ],
-  },
-  {
-    name: 'NIRMAL',
-    img: 'https://srinidhichits.com/assests/Nirmal.jpg',
-    details: [
-      'N.SATISH',
-      'H NO 7-3-23, 1ST FLOOR,',
-      'MAIN ROAD,',
-      'OPP:-NIRMAL TOYS EMPORIUM,',
-      'NIRMAL,',
-      'ADILABAD',
-      'Ph.no:08734-243222',
-    ],
-  },
-  {
-    name: 'GODAVARIKHANI',
-    img: 'https://srinidhichits.com/assests/gdk.jpg',
-    details: [
-      'T.RAJI REDDY',
-      'H NO 22-3-274/17,',
-      '1ST FLOOR, F.C.I ROAD,',
-      'NTPC JYOTHI NAGAR,',
-      'GODAVARIKHANI,',
-      'Ph.no:08728-274544',
-    ],
-  },
-  {
-    name: 'SECUNDERABAD',
-    img: 'https://srinidhichits.com/assests/Secun.jpg',
-    details: [
-      'V.LAXMA REDDY',
-      'K.SANTHOSH REDDY',
-      'PLOT NO.1,',
-      'SRR. ARCADE, FOURTH FLOOR,',
-      'THIRIMULGHERRY,SECUNDERABAD-500015.',
-      'Ph.no:040-27745699',
-    ],
-  },
-  {
-    name: 'HANMAKONDA',
-    img: 'https://srinidhichits.com/assests/HNMK.jpg',
-    details: [
-      'M.NARSIMHA REDDY',
-      'K.RAJI REDDY',
-      'H.NO 2-10-796,',
-      'KANAKA DURGA COLONY,',
-      'SUBHEDARY ,HANMKONDA, WARANGAL (U)',
-      'Ph.no:0870-2977234',
-    ],
-  },
-  {
-    name: 'MANCHERIAL',
-    img: 'https://srinidhichits.com/assests/MNCH.jpg',
-    details: [
-      'T.THIRUPATHI',
-      'H.NO.12-844/6 1ST FLOOR,',
-      'BESIDE:PNB BANK,',
-      'CHINTHAPANDU WADA,',
-      'MANCHERIAL -504208,',
-      'Ph.no:08736-252155',
-    ],
-  },
-  {
-    name: 'SIDDIPET',
-    img: 'https://srinidhichits.com/assests/siddipet.jpg',
-    details: [
-      'K.PRABHAKAR REDDDY',
-      'H NO 18-19-25/E1,',
-      'BHAVANI NAGAR,',
-      'BLACK OFFICE CHOWRASTA,',
-      'SIDDIPET -502103,',
-      'Ph.no:08457-230155',
-    ],
-  },
-  {
-    name: 'SIRCILLA',
-    img: 'https://srinidhichits.com/assests/chenetha.jpg',
-    details: [
-      'K.SRINIVAS REDDDY',
-      'M.V. RAMANA REDDDY',
-      'H NO 3-1-33/1/C & D,',
-      '1st Floor,',
-      'KARIMNAGAR ROAD,',
-      'SIRCILLA -505301,',
-      'Ph.no:08723 - 297233.',
-    ],
-  },
-  {
-    name: 'KARIMNAGAR 2',
-    img: 'https://srinidhichits.com/assests/12.jpg',
-    details: [
-      'G. KOMAL REDDDY',
-      'M. VENKATESHWARLU',
-      'H. PRAKASH REDDDY',
-      'H NO 2-10-759,',
-      'SRINIDHI HOUSE,',
-      'OLD DIG BUILDING, JYOTHINAGAR,',
-      'KARIMNAGAR -505001,',
-      'Ph.no:0878-2245338.',
-    ],
-  },
-];
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import AnimatedTelanganaMap from '../components/AnimatedTelanganaMap';
+import { branches } from '../data/branches';
+
+const defaultBranch = branches[0];
 
 export default function ContactPage() {
+  const [activeBranch, setActiveBranch] = useState(defaultBranch);
+
   return (
-    <div className="contact-page" style={{ fontFamily: 'Nunito, Inter, sans-serif' }}>
+    <div className="contact-page">
       <style>{`
         .contact-page {
-          background: #fff;
-          color: #000;
+          background: linear-gradient(180deg, #fffef9 0%, #fff 100%);
+          color: #111111;
+          font-family: Nunito, Inter, sans-serif;
         }
 
         .contact-hero {
           position: relative;
-          min-height: 480px;
+          min-height: 470px;
           overflow: hidden;
-          background: radial-gradient(circle at top, #ffe149 0%, #ffe536 55%, #ffd900 100%);
+          background: radial-gradient(circle at top, #ffe149 0%, #ffe536 58%, #ffd900 100%);
         }
 
         .contact-hero__image {
           position: absolute;
           inset: 0;
-          z-index: 0;
-          background-image: linear-gradient(rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.08)), url('https://srinidhichits.com/assests/about%20bg.png');
+          background-image: linear-gradient(rgba(255,255,255,0.09), rgba(255,255,255,0.09)), url('https://srinidhichits.com/assests/about%20bg.png');
           background-size: cover;
           background-position: center;
           opacity: 0.9;
@@ -181,45 +36,45 @@ export default function ContactPage() {
         .contact-hero__content {
           position: relative;
           z-index: 1;
-          text-align: center;
           padding: 120px 20px 80px;
+          text-align: center;
         }
 
         .contact-hero__title {
-          font-size: 80px;
-          line-height: 1;
-          letter-spacing: 4px;
-          color: #fff;
-          text-shadow: 15px 30px 20px rgba(0, 0, 0, 0.35);
           margin: 0;
+          font-size: clamp(3rem, 5vw, 5rem);
+          line-height: 0.95;
+          letter-spacing: 4px;
+          color: #ffffff;
+          text-shadow: 12px 22px 24px rgba(0, 0, 0, 0.32);
           font-weight: 900;
         }
 
         .contact-hero__subtitle {
-          margin: 20px auto 0;
-          font-size: 30px;
-          font-weight: 700;
-          color: #000;
           max-width: 760px;
+          margin: 20px auto 0;
+          font-size: clamp(1.2rem, 2vw, 1.8rem);
+          font-weight: 800;
+          color: #111111;
           line-height: 1.1;
         }
 
         .contact-hero__button {
-          margin-top: 30px;
           display: inline-flex;
           align-items: center;
           justify-content: center;
+          margin-top: 28px;
           width: 260px;
-          height: 48px;
+          min-height: 48px;
           border: 0;
           border-radius: 999px;
           background: #fe2121;
-          color: #fff;
+          color: #ffffff;
           font-weight: 900;
           text-transform: uppercase;
-          letter-spacing: 1px;
-          box-shadow: 5px 5px 18px rgba(250, 12, 12, 0.856);
+          letter-spacing: 0.8px;
           text-decoration: none;
+          box-shadow: 5px 6px 20px rgba(250, 12, 12, 0.78);
           transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
@@ -228,89 +83,251 @@ export default function ContactPage() {
           box-shadow: 5px 8px 24px rgba(250, 12, 12, 0.9);
         }
 
-        .contact-locations {
+        .contact-shell {
+          width: min(1200px, calc(100% - 40px));
+          margin: 0 auto;
+          padding: 36px 0 110px;
+        }
+
+        .contact-layout {
+          display: grid;
+          grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+          gap: 28px;
+          align-items: start;
+        }
+
+        .contact-map-panel {
+          position: sticky;
+          top: 24px;
+          padding: 24px;
+          border-radius: 28px;
+          background: linear-gradient(180deg, #ffffff 0%, #fffaf1 100%);
+          box-shadow: 0 18px 40px rgba(17, 17, 17, 0.08);
+          border: 1px solid rgba(254, 33, 33, 0.08);
+        }
+
+        .contact-map-header {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          margin-bottom: 18px;
+        }
+
+        .contact-pill {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: fit-content;
+          padding: 6px 12px;
+          border-radius: 999px;
+          background: rgba(254, 33, 33, 0.1);
+          color: #fe2121;
+          font-size: 0.78rem;
+          font-weight: 900;
+          letter-spacing: 0.6px;
+          text-transform: uppercase;
+        }
+
+        .contact-map-header h2,
+        .contact-details-header h2 {
+          margin: 0;
+          font-size: 1.55rem;
+          line-height: 1.1;
+          color: #111111;
+        }
+
+        .contact-map-header p,
+        .contact-details-header p {
+          margin: 0;
+          color: #3f3f46;
+          line-height: 1.5;
+          font-size: 0.98rem;
+        }
+
+        .contact-map-stage {
           position: relative;
-          padding: 0 20px 230px;
+          border-radius: 24px;
+          padding: 18px;
+          background: linear-gradient(135deg, rgba(255, 217, 0, 0.25), rgba(254, 33, 33, 0.08));
+          border: 1px solid rgba(254, 33, 33, 0.08);
+        }
+
+        .contact-map-badge {
+          position: absolute;
+          top: 14px;
+          left: 14px;
+          z-index: 2;
+          padding: 9px 12px;
+          border-radius: 999px;
+          background: rgba(17, 17, 17, 0.9);
+          color: #ffffff;
+          font-size: 0.8rem;
+          font-weight: 900;
+          letter-spacing: 0.6px;
+          text-transform: uppercase;
+        }
+
+        .contact-map-canvas {
+          width: 100%;
+          min-height: 430px;
+          border-radius: 20px;
+          padding: 12px;
+          background: linear-gradient(135deg, rgba(17, 17, 17, 0.98), rgba(33, 33, 33, 0.95));
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .contact-map-canvas svg {
+          width: 100%;
+          height: auto;
+          max-width: 520px;
+        }
+
+        .contact-stats {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 12px;
+          margin-top: 18px;
+        }
+
+        .contact-stat {
+          padding: 14px 12px;
+          border-radius: 18px;
+          background: #111111;
+          color: #ffffff;
           text-align: center;
         }
 
-        .contact-locations__grid {
-          width: min(1200px, 100%);
-          margin: 50px auto 0;
-          display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          gap: 30px;
-        }
-
-        .contact-card {
-          position: relative;
-          height: 400px;
-          padding: 10px;
-          border-radius: 10px;
-          background: #fff;
-          box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
-          transition: box-shadow 0.3s ease, transform 0.2s ease;
-        }
-
-        .contact-card:hover {
-          box-shadow: 0 6px 30px rgba(254, 33, 33, 0.4);
-          transform: translateY(-2px);
-        }
-
-        .contact-thumb {
-          width: 150px;
-          height: 150px;
-          margin: 30% auto 0;
-          border-radius: 50%;
-          overflow: hidden;
-          border: 8px solid rgba(255, 225, 73, 0.8);
-          transition: width 0.6s ease, height 0.6s ease, margin 0.6s ease, border 0.6s ease, background-image 0.6s ease;
-        }
-
-        .contact-thumb img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
+        .contact-stat strong {
           display: block;
+          font-size: 1.15rem;
+          margin-bottom: 4px;
         }
 
-        .contact-branch {
-          margin: 10px 0 0;
-          font-size: 18px;
-          line-height: 1;
+        .contact-stat span {
+          font-size: 0.8rem;
           text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: rgba(255,255,255,0.88);
+        }
+
+        .contact-details-panel {
+          padding: 24px 0 20px;
+        }
+
+        .contact-details-header {
+          margin-bottom: 16px;
+        }
+
+        .contact-scroll-stack {
+          max-height: 760px;
+          overflow-y: auto;
+          padding-right: 6px;
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          scrollbar-width: thin;
+          scrollbar-color: #fe2121 rgba(255, 217, 0, 0.2);
+        }
+
+        .contact-scroll-stack::-webkit-scrollbar {
+          width: 10px;
+        }
+
+        .contact-scroll-stack::-webkit-scrollbar-track {
+          background: rgba(255, 217, 0, 0.18);
+          border-radius: 999px;
+        }
+
+        .contact-scroll-stack::-webkit-scrollbar-thumb {
+          background: linear-gradient(180deg, #fe2121, #ff9b1a);
+          border-radius: 999px;
+        }
+
+        .contact-branch-card {
+          padding: 20px;
+          border-radius: 22px;
+          background: #ffffff;
+          border: 1px solid rgba(17, 17, 17, 0.06);
+          box-shadow: 0 10px 28px rgba(17, 17, 17, 0.07);
+          cursor: pointer;
+          transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .contact-branch-card:hover,
+        .contact-branch-card--active {
+          transform: translateY(-2px);
+          border-color: rgba(254, 33, 33, 0.28);
+          box-shadow: 0 18px 36px rgba(254, 33, 33, 0.16);
+          background: linear-gradient(180deg, #fffdf8 0%, #fff8e8 100%);
+        }
+
+        .contact-card-top {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          margin-bottom: 12px;
+        }
+
+        .contact-location-badge {
+          width: fit-content;
+          padding: 5px 10px;
+          border-radius: 999px;
+          background: rgba(255, 217, 0, 0.18);
+          color: #111111;
+          font-size: 0.74rem;
           font-weight: 900;
-          color: #000;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
 
-        .contact-branch-content {
-          display: none;
-          padding: 20px 0 0;
-          animation: fade 0.8s ease-in 1;
-        }
-
-        .contact-branch-content h2 {
+        .contact-branch-card h3 {
           margin: 0;
-          font-size: 14px;
-          line-height: 1.2;
+          font-size: 1.2rem;
+          line-height: 1.1;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
 
-        .contact-branch-content p {
-          margin: 2px 0;
-          font-size: 12px;
-          line-height: 1.2;
+        .contact-divider {
+          height: 1px;
+          margin: 12px 0 14px;
+          background: linear-gradient(90deg, transparent, rgba(254,33,33,0.24), transparent);
         }
 
-        .contact-card:hover .contact-thumb {
-          width: 80px;
-          height: 80px;
-          margin: 10% auto 0;
-          border: 3px solid rgba(254, 33, 33, 1);
-          background-image: linear-gradient(120deg, rgba(252, 50, 47, 0.8) 50%, rgba(255, 220, 20, 0.6) 80%);
+        .contact-branch-card p {
+          margin: 0 0 12px;
+          font-size: 0.95rem;
+          line-height: 1.5;
+          color: #27272a;
         }
 
-        .contact-card:hover .contact-branch-content {
-          display: block;
+        .contact-contact-row {
+          display: flex;
+          justify-content: space-between;
+          gap: 12px;
+          align-items: flex-start;
+          padding-top: 8px;
+          font-size: 0.92rem;
+        }
+
+        .contact-contact-row span {
+          font-weight: 900;
+          color: #111111;
+          text-transform: uppercase;
+          letter-spacing: 0.4px;
+          min-width: 62px;
+        }
+
+        .contact-contact-row a {
+          color: #111111;
+          text-decoration: none;
+          text-align: right;
+        }
+
+        .contact-contact-row a:hover {
+          color: #fe2121;
         }
 
         .contact-footer {
@@ -340,7 +357,8 @@ export default function ContactPage() {
           letter-spacing: 0.5px;
         }
 
-        .contact-footer__links a {
+        .contact-footer__links a,
+        .contact-footer__center a {
           color: #fff;
           text-decoration: none;
         }
@@ -357,11 +375,6 @@ export default function ContactPage() {
           font-weight: 900;
           text-transform: uppercase;
           letter-spacing: 0.5px;
-        }
-
-        .contact-footer__center a {
-          color: #fff;
-          text-decoration: none;
         }
 
         .contact-footer__social {
@@ -388,46 +401,24 @@ export default function ContactPage() {
           color: #fff;
         }
 
-        .contact-backtop {
-          position: fixed;
-          right: 20px;
-          bottom: 20px;
-          width: 40px;
-          height: 40px;
-          border-radius: 999px;
-          border: 0;
-          background: #fe2121;
-          color: #fff;
-          box-shadow: 5px 5px 18px rgba(250, 12, 12, 0.856);
-          text-decoration: none;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 30;
-        }
-
-        @keyframes fade {
-          0% { opacity: 0; }
-          100% { opacity: 1; }
-        }
-
         @media (max-width: 1024px) {
-          .contact-locations__grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+          .contact-layout {
+            grid-template-columns: 1fr;
           }
 
-          .contact-hero__title {
-            font-size: 56px;
-          }
-
-          .contact-hero__subtitle {
-            font-size: 24px;
+          .contact-map-panel {
+            position: static;
           }
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 700px) {
+          .contact-shell {
+            width: min(100% - 20px, 1200px);
+            padding-top: 24px;
+          }
+
           .contact-hero {
-            min-height: 360px;
+            min-height: 380px;
           }
 
           .contact-hero__content {
@@ -435,16 +426,10 @@ export default function ContactPage() {
           }
 
           .contact-hero__title {
-            font-size: 38px;
             letter-spacing: 2px;
           }
 
-          .contact-hero__subtitle {
-            font-size: 18px;
-            line-height: 1.2;
-          }
-
-          .contact-locations__grid {
+          .contact-stats {
             grid-template-columns: 1fr;
           }
 
@@ -463,25 +448,114 @@ export default function ContactPage() {
           <p className="contact-hero__subtitle" style={{ marginTop: 6 }}>
             but an idea is nothing until it's realized.
           </p>
-          <a href="#bottom" className="contact-hero__button">Know Where We Are!</a>
+          <a href="#contact-shell" className="contact-hero__button">Know Where We Are!</a>
         </div>
       </section>
 
-      <section id="bottom" className="contact-locations">
-        <div className="contact-locations__grid">
-          {branches.map((branch) => (
-            <div className="contact-card" key={branch.name}>
-              <div className="contact-thumb">
-                <img src={branch.img} alt={branch.name} />
-              </div>
-              <p className="contact-branch">{branch.name}</p>
-              <div className="contact-branch-content">
-                {branch.details.map((line) => (
-                  <p key={`${branch.name}-${line}`}>{line}</p>
-                ))}
+      <section id="contact-shell" className="contact-shell">
+        <div className="contact-layout">
+          <motion.div
+            className="contact-map-panel"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+          >
+            <div className="contact-map-header">
+              <span className="contact-pill">Live Service Map</span>
+              <h2>Telangana service coverage at a glance</h2>
+              <p>Hover over the map pins to spotlight a branch and quickly review its service area.</p>
+            </div>
+
+            <div className="contact-map-stage">
+              <div className="contact-map-badge">Active: {activeBranch.name}</div>
+              <div className="contact-map-canvas">
+                <AnimatedTelanganaMap
+                  activeId={activeBranch.id}
+                  onMarkerHover={(branch) => setActiveBranch(branch)}
+                  onMarkerLeave={() => setActiveBranch(defaultBranch)}
+                />
               </div>
             </div>
-          ))}
+
+            <div className="contact-stats">
+              <div className="contact-stat">
+                <strong>{branches.length}</strong>
+                <span>Service Points</span>
+              </div>
+              <div className="contact-stat">
+                <strong>{branches.length}</strong>
+                <span>Locations Listed</span>
+              </div>
+              <div className="contact-stat">
+                <strong>24/7</strong>
+                <span>Support Access</span>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="contact-details-panel">
+            <div className="contact-details-header">
+              <span className="contact-pill">Contact Directory</span>
+              <h2 style={{ marginTop: 10 }}>Reach the nearest branch</h2>
+              <p style={{ marginTop: 8 }}>
+                Scroll through the locations to compare addresses, phone numbers, and email support.
+              </p>
+            </div>
+
+            <div className="contact-scroll-stack">
+              {branches.map((branch) => {
+                const isActive = activeBranch.id === branch.id;
+                return (
+                  <motion.article
+                    key={branch.id}
+                    className={`contact-branch-card ${isActive ? 'contact-branch-card--active' : ''}`}
+                    onMouseEnter={() => setActiveBranch(branch)}
+                    onMouseLeave={() => setActiveBranch(defaultBranch)}
+                    whileHover={{ y: -2 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="contact-card-top" style={{ flexDirection: 'row', alignItems: 'center', gap: '16px', marginBottom: 0 }}>
+                      <motion.div 
+                        className="branch-logo"
+                        whileHover={{ scale: 1.15, rotate: 8 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                        style={{ width: 56, height: 56, borderRadius: '50%', overflow: 'hidden', flexShrink: 0, border: '2px solid rgba(254, 33, 33, 0.15)', backgroundColor: '#f9f9f9' }}
+                      >
+                        <img src={branch.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt={`${branch.name} branch`} />
+                      </motion.div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <span className="contact-location-badge">
+                          {branch.headOffice ? 'Head Office' : 'Service Branch'}
+                        </span>
+                        <h3 style={{ margin: 0 }}>{branch.name}</h3>
+                      </div>
+                    </div>
+                    
+                    <motion.div
+                      initial={false}
+                      animate={{ 
+                        height: isActive ? 'auto' : 0, 
+                        opacity: isActive ? 1 : 0,
+                        marginTop: isActive ? 16 : 0
+                      }}
+                      style={{ overflow: 'hidden' }}
+                    >
+                      <div className="contact-divider" style={{ marginTop: 0 }} />
+                      <p>{branch.address}</p>
+                      <div className="contact-contact-row">
+                        <span>Phone</span>
+                        <a href={`tel:${branch.phone}`}>{branch.phone}</a>
+                      </div>
+                      <div className="contact-contact-row">
+                        <span>Email</span>
+                        <a href={`mailto:${branch.email}`}>{branch.email}</a>
+                      </div>
+                    </motion.div>
+                  </motion.article>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -510,8 +584,6 @@ export default function ContactPage() {
           <a href="mailto:contact@srinidhichits.com" aria-label="Email">✉</a>
         </div>
       </footer>
-
-      <a href="#" className="contact-backtop" aria-label="Back to top">↑</a>
     </div>
   );
 }
