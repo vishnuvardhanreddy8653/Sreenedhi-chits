@@ -299,7 +299,7 @@ export default function ContactPage() {
           border: 1px solid rgba(17, 17, 17, 0.06);
           box-shadow: 0 10px 28px rgba(17, 17, 17, 0.07);
           cursor: pointer;
-          transition: box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+          transition: box-shadow 0.2s ease-out, border-color 0.2s ease-out, background 0.2s ease-out;
         }
 
         .contact-branch-card:hover,
@@ -563,36 +563,42 @@ export default function ContactPage() {
                 return (
                   <motion.article
                     key={branch.id}
+                    layout
                     ref={(el) => (itemRefs.current[branch.id] = el)}
                     className={`contact-branch-card ${isActive ? 'contact-branch-card--active' : ''}`}
                     onMouseMove={(e) => handleMouseMove(e, branch)}
                     onClick={() => handleClick(branch)}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 40, mass: 1 }}
                   >
                     <div className="contact-card-top" style={{ flexDirection: 'row', alignItems: 'center', gap: '16px', marginBottom: 0 }}>
                       <motion.div 
                         className="branch-logo"
-                        whileHover={{ scale: 1.15, rotate: 8 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                        layout
+                        whileHover={{ scale: 1.05, rotate: 3 }}
+                        transition={{ type: "spring", stiffness: 500, damping: 40 }}
                         style={{ width: 56, height: 56, borderRadius: '50%', overflow: 'hidden', flexShrink: 0, border: '2px solid rgba(254, 33, 33, 0.15)', backgroundColor: '#f9f9f9' }}
                       >
                         <img src={branch.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt={`${branch.name} branch`} />
                       </motion.div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                        <span className="contact-location-badge">
+                        <motion.span layout className="contact-location-badge">
                           {branch.headOffice ? 'Head Office' : 'Service Branch'}
-                        </span>
-                        <h3 style={{ margin: 0 }}>{branch.name}</h3>
+                        </motion.span>
+                        <motion.h3 layout style={{ margin: 0 }}>{branch.name}</motion.h3>
                       </div>
                     </div>
                     
                     <motion.div
+                      layout
                       initial={false}
                       animate={{ 
                         height: isActive ? 'auto' : 0, 
                         opacity: isActive ? 1 : 0,
                         marginTop: isActive ? 16 : 0
                       }}
-                      transition={{ duration: 0.3, ease: 'easeInOut' }}
+                      transition={{ type: "spring", stiffness: 500, damping: 40, mass: 1 }}
                       style={{ overflow: 'hidden' }}
                     >
                       <div className="contact-divider" style={{ marginTop: 0 }} />
