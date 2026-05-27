@@ -1,12 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import PageHero from '../components/PageHero';
 
-const IMAGES = Array.from({ length: 11 }, (_, i) => `https://srinidhichits.com/assests/Gallery/1/${i + 1}.jpg`);
-
 export default function GalleryPage() {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/cms/gallery')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setImages(data);
+        else setImages([]);
+      })
+      .catch(err => console.error("Error fetching gallery:", err));
+  }, []);
 
   return (
     <div className="bg-white">
@@ -43,18 +52,18 @@ export default function GalleryPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {IMAGES.map((src, index) => (
+            {images.map((img, index) => (
               <motion.div
-                key={index}
+                key={img.id}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
-                onClick={() => setSelectedImage(src)}
+                onClick={() => setSelectedImage(img.imageUrl)}
                 className="group relative rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 bg-white aspect-[4/3] border-4 border-white cursor-pointer"
               >
                 <img
-                  src={src}
+                  src={img.imageUrl}
                   alt={`Memory ${index + 1}`}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   onError={(e) => {

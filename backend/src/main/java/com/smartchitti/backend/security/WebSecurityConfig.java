@@ -60,7 +60,7 @@ public class WebSecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(Arrays.asList("*")); // Allow any local port (5173, 5174, etc.)
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
+        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token", "x-admin-password"));
         configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -78,6 +78,8 @@ public class WebSecurityConfig {
                 auth.requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/api/public/**").permitAll()
                     .requestMatchers("/api/chatbot/**").permitAll()
+                    .requestMatchers("/api/cms/**").permitAll()
+                    .requestMatchers("/uploads/**").permitAll()
                     .anyRequest().authenticated()
             );
 

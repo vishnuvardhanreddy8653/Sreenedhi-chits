@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaPhoneAlt, FaWhatsapp, FaInstagram, FaFacebookF, FaEnvelope } from 'react-icons/fa';
 import AnimatedTelanganaMap from '../components/AnimatedTelanganaMap';
-import { branches } from '../data/branches';
 import PageHero from '../components/PageHero';
 
 export default function ContactPage() {
@@ -11,6 +10,19 @@ export default function ContactPage() {
   const mousePos = useRef({ x: 0, y: 0 });
   const pendingBranchId = useRef(null);
   const itemRefs = useRef({});
+  const [mapMousePos, setMapMousePos] = useState({ x: 0, y: 0 });
+  const [hoveredMapMarker, setHoveredMapMarker] = useState(null);
+  const [branches, setBranches] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/cms/branches')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setBranches(data);
+        else setBranches([]);
+      })
+      .catch(err => console.error("Error fetching branches:", err));
+  }, []);
 
   useEffect(() => {
     if (activeBranch && itemRefs.current[activeBranch.id]) {
@@ -519,12 +531,19 @@ export default function ContactPage() {
               <p>Hover over the map pins to spotlight a branch and quickly review its service area.</p>
             </div>
 
-            <div className="contact-map-stage">
-              {activeBranch && <div className="contact-map-badge">Active: {activeBranch.name}</div>}
+            <div 
+              className="contact-map-stage"
+              onMouseMove={(e) => setMapMousePos({ x: e.clientX, y: e.clientY })}
+            >
               <div className="contact-map-canvas">
                 <AnimatedTelanganaMap
+                  branches={branches}
                   activeId={activeBranch?.id}
-                  onMarkerHover={(branch) => setActiveBranch(branch)}
+                  onMarkerHover={(branch) => {
+                    setActiveBranch(branch);
+                    setHoveredMapMarker(branch);
+                  }}
+                  onMarkerLeave={() => setHoveredMapMarker(null)}
                 />
               </div>
             </div>
@@ -580,7 +599,7 @@ export default function ContactPage() {
                         transition={{ type: "spring", stiffness: 500, damping: 40 }}
                         style={{ width: 56, height: 56, borderRadius: '50%', overflow: 'hidden', flexShrink: 0, border: '2px solid rgba(254, 33, 33, 0.15)', backgroundColor: '#f9f9f9' }}
                       >
-                        <img src={branch.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt={`${branch.name} branch`} />
+                        <img src={branch.imageUrl} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt={`${branch.name} branch`} />
                       </motion.div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                         <motion.span layout className="contact-location-badge">
@@ -645,6 +664,43 @@ export default function ContactPage() {
           <a href="mailto:contact@srinidhichits.com" aria-label="Email" className="social-mail"><FaEnvelope size={20} /></a>
         </div>
       </footer>
+
+      {/* Floating Cursor-Tracking Tooltip for Map */}
+      {hoveredMapMarker && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, x: mapMousePos.x + 16, y: mapMousePos.y + 16 }}
+          animate={{ opacity: 1, scale: 1, x: mapMousePos.x + 16, y: mapMousePos.y + 16 }}
+          transition={{
+            opacity: { duration: 0.15 },
+            scale: { type: 'spring', stiffness: 400, damping: 25 },
+            x: { type: 'spring', stiffness: 500, damping: 30, mass: 0.5 },
+            y: { type: 'spring', stiffness: 500, damping: 30, mass: 0.5 }
+          }}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            zIndex: 9999,
+            pointerEvents: 'none',
+            background: 'rgba(17, 17, 17, 0.95)',
+            color: '#fff',
+            padding: '8px 14px',
+            borderRadius: '12px',
+            fontSize: '13px',
+            fontWeight: '800',
+            fontFamily: 'Inter, sans-serif',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.25)',
+            border: '1px solid rgba(255,255,255,0.1)',
+            backdropFilter: 'blur(10px)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}
+        >
+          <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#fe2121', boxShadow: '0 0 8px #fe2121' }} />
+          {hoveredMapMarker.name}
+        </motion.div>
+      )}
     </div>
   );
 }

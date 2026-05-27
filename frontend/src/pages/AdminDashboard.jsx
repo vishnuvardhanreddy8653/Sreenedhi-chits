@@ -1,224 +1,398 @@
-import React, { useState } from 'react';
-import { 
-  Users, 
-  TrendingUp, 
-  Briefcase, 
-  CreditCard,
-  Search,
-  Filter,
-  MoreVertical,
-  ChevronRight,
-  ArrowUpRight
-} from 'lucide-react';
-
-// Mock Data based on real Srinidhi schemes
-const SCHEME_PORTFOLIO = [
-  { id: 1, name: "50 Months Plan", members: 450, totalValue: "2.35 Cr", minInstallment: "19,500", progress: 85 },
-  { id: 2, name: "40 Months Plan", members: 320, totalValue: "1.25 Cr", minInstallment: "17,500", progress: 65 },
-  { id: 3, name: "30 Months Plan", members: 580, totalValue: "3.42 Cr", minInstallment: "14,000", progress: 92 },
-  { id: 4, name: "25 Months Plan", members: 210, totalValue: "85 L", minInstallment: "30,000", progress: 45 }
-];
-
-const RECENT_CUSTOMERS = [
-  { id: "CUST-8902", name: "Ramesh Kumar", scheme: "50 Months Plan", status: "Active", invested: "₹ 1,95,000", date: "Today" },
-  { id: "CUST-8901", name: "Sita Reddy", scheme: "30 Months Plan", status: "Pending", invested: "₹ 42,000", date: "Yesterday" },
-  { id: "CUST-8900", name: "Venkatesh P.", scheme: "25 Months Plan", status: "Completed", invested: "₹ 7,50,000", date: "12 May 2026" },
-  { id: "CUST-8899", name: "Lakshmi S.", scheme: "40 Months Plan", status: "Active", invested: "₹ 87,500", date: "10 May 2026" },
-  { id: "CUST-8898", name: "Praveen M.", scheme: "50 Months Plan", status: "Active", invested: "₹ 3,90,000", date: "08 May 2026" }
-];
+import React, { useState, useEffect, useRef } from 'react';
+import { Lock, MapPin, Image as ImageIcon, Plus, Trash2, LogOut, Upload } from 'lucide-react';
 
 export default function AdminDashboard() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  return (
-    <div className="bg-gray-50 min-h-screen pb-12">
-      {/* Top Banner / Header */}
-      <div className="bg-white border-b border-gray-200 px-8 py-6 sticky top-16 z-40">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">CRM Dashboard</h1>
-            <p className="text-sm text-gray-500 mt-1">Company Portfolio & Customer Insights</p>
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (password === "12345678") {
+      setIsAuthenticated(true);
+      setError("");
+    } else {
+      setError("Invalid password");
+    }
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+        <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full">
+          <div className="flex justify-center mb-6">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center text-red-600">
+              <Lock size={32} />
+            </div>
           </div>
-          <div className="flex items-center gap-3 w-full md:w-auto">
-            <div className="relative w-full md:w-64">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-              <input 
-                type="text" 
-                placeholder="Search customers..." 
-                className="w-full pl-10 pr-4 py-2 bg-gray-100 border-transparent rounded-full text-sm focus:border-red-500 focus:bg-white focus:ring-2 focus:ring-red-200 transition-all"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+          <h1 className="text-2xl font-bold text-center text-gray-900 mb-6">Admin Login</h1>
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none"
+                placeholder="Enter admin password"
+                autoFocus
               />
             </div>
-            <button className="p-2 bg-white border border-gray-200 rounded-full text-gray-600 hover:bg-gray-50 transition-colors">
-              <Filter size={18} />
+            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+            <button
+              type="submit"
+              className="w-full bg-red-600 text-white font-bold py-3 rounded-lg hover:bg-red-700 transition-colors"
+            >
+              Access Dashboard
             </button>
-          </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
+  return <CMSInterface onLogout={() => { setIsAuthenticated(false); setPassword(""); }} password={password} />;
+}
+
+function CMSInterface({ onLogout, password }) {
+  const [activeTab, setActiveTab] = useState("locations");
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
+      {/* Sidebar */}
+      <div className="w-full md:w-64 bg-gray-900 text-white flex flex-col md:min-h-screen">
+        <div className="p-6 border-b border-gray-800">
+          <h1 className="text-xl font-bold text-white tracking-tight">Smart Chitti CMS</h1>
+          <p className="text-sm text-gray-400 mt-1">Content Manager</p>
+        </div>
+        <nav className="flex-1 p-4 space-y-2">
+          <button
+            onClick={() => setActiveTab("locations")}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
+              activeTab === "locations" ? "bg-red-600 text-white" : "text-gray-300 hover:bg-gray-800"
+            }`}
+          >
+            <MapPin size={20} />
+            <span className="font-medium">Locations</span>
+          </button>
+          <button
+            onClick={() => setActiveTab("gallery")}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
+              activeTab === "gallery" ? "bg-red-600 text-white" : "text-gray-300 hover:bg-gray-800"
+            }`}
+          >
+            <ImageIcon size={20} />
+            <span className="font-medium">Gallery</span>
+          </button>
+        </nav>
+        <div className="p-4 border-t border-gray-800">
+          <button
+            onClick={onLogout}
+            className="w-full flex items-center gap-3 px-4 py-3 text-gray-300 hover:bg-gray-800 rounded-xl transition-colors"
+          >
+            <LogOut size={20} />
+            <span className="font-medium">Logout</span>
+          </button>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 space-y-8">
-        
-        {/* Key Metrics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <MetricCard 
-            title="Total Customers" 
-            value="12,450" 
-            trend="+12%" 
-            icon={<Users className="text-blue-600" size={24} />} 
-            bg="bg-blue-50"
-          />
-          <MetricCard 
-            title="Active Chits" 
-            value="15K+" 
-            trend="+8%" 
-            icon={<Briefcase className="text-red-600" size={24} />} 
-            bg="bg-red-50"
-          />
-          <MetricCard 
-            title="Portfolio Value" 
-            value="₹ 14.5 Cr" 
-            trend="+24%" 
-            icon={<TrendingUp className="text-emerald-600" size={24} />} 
-            bg="bg-emerald-50"
-          />
-          <MetricCard 
-            title="Monthly Collection" 
-            value="₹ 82.5 L" 
-            trend="+5%" 
-            icon={<CreditCard className="text-orange-600" size={24} />} 
-            bg="bg-orange-50"
-          />
+      {/* Main Content */}
+      <div className="flex-1 p-4 md:p-8 overflow-auto">
+        <div className="max-w-5xl mx-auto">
+          {activeTab === "locations" && <LocationsManager password={password} />}
+          {activeTab === "gallery" && <GalleryManager password={password} />}
         </div>
+      </div>
+    </div>
+  );
+}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Portfolio Section (Spans 2 columns) */}
-          <div className="lg:col-span-2 bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
-            <div className="p-6 border-b border-gray-100 flex justify-between items-center">
-              <h2 className="font-bold text-gray-900 text-lg">Scheme Performance Portfolio</h2>
-              <button className="text-red-600 text-sm font-medium hover:text-red-700 flex items-center gap-1">
-                View All <ChevronRight size={16} />
-              </button>
-            </div>
-            <div className="p-6 space-y-6">
-              {SCHEME_PORTFOLIO.map((scheme) => (
-                <div key={scheme.id} className="group">
-                  <div className="flex justify-between items-end mb-2">
-                    <div>
-                      <h3 className="font-semibold text-gray-900 group-hover:text-red-600 transition-colors">{scheme.name}</h3>
-                      <p className="text-xs text-gray-500 mt-1">{scheme.members} Members • Min Inst: ₹{scheme.minInstallment}</p>
-                    </div>
-                    <div className="text-right">
-                      <span className="font-bold text-gray-900">₹ {scheme.totalValue}</span>
-                    </div>
-                  </div>
-                  <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
-                    <div 
-                      className="bg-red-600 h-2.5 rounded-full" 
-                      style={{ width: `${scheme.progress}%` }}
-                    ></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+// --- Managers ---
 
-          {/* Quick Actions / Insights (Spans 1 column) */}
-          <div className="bg-gray-900 rounded-3xl shadow-lg p-8 text-white relative overflow-hidden">
-            <div className="absolute -top-12 -right-12 w-40 h-40 bg-red-500 rounded-full blur-3xl opacity-20"></div>
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-500 rounded-full blur-3xl opacity-20"></div>
-            
-            <h2 className="font-bold text-xl mb-2 relative z-10">AI Insights</h2>
-            <p className="text-gray-400 text-sm mb-6 relative z-10">System generated recommendations</p>
-            
-            <div className="space-y-4 relative z-10">
-              <InsightCard text="High demand detected for 30 Months Plan this week." />
-              <InsightCard text="5 pending collections from Top Tier customers." />
-              <InsightCard text="New branch opening in Hyderabad might increase leads by 15%." />
-            </div>
+function LocationsManager({ password }) {
+  const [branches, setBranches] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-            <button className="w-full mt-8 py-3 bg-white text-gray-900 rounded-xl font-semibold hover:bg-gray-100 transition-colors flex items-center justify-center gap-2">
-              Generate Full Report <ArrowUpRight size={18} />
-            </button>
-          </div>
+  // Form State
+  const [isAdding, setIsAdding] = useState(false);
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("info@srinidhichits.com");
+  const [coordX, setCoordX] = useState("0.5");
+  const [coordY, setCoordY] = useState("0.5");
+  const [headOffice, setHeadOffice] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+
+  const fetchBranches = async () => {
+    try {
+      const res = await fetch("/api/cms/branches");
+      const data = await res.json();
+      setBranches(data);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBranches();
+  }, []);
+
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    if (!imageFile) {
+      alert("Please select an image file.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("address", address);
+    formData.append("phone", phone);
+    formData.append("email", email);
+    formData.append("coordX", coordX);
+    formData.append("coordY", coordY);
+    formData.append("headOffice", headOffice);
+    formData.append("image", imageFile);
+
+    try {
+      const res = await fetch("/api/cms/branches", {
+        method: "POST",
+        headers: { "x-admin-password": password },
+        body: formData
+      });
+      if (res.ok) {
+        setIsAdding(false);
+        fetchBranches();
+        // Reset form
+        setName(""); setAddress(""); setPhone(""); setCoordX("0.5"); setCoordY("0.5"); setImageFile(null); setHeadOffice(false);
+      } else {
+        alert("Failed to add branch");
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this location?")) return;
+    try {
+      const res = await fetch(`/api/cms/branches/${id}`, {
+        method: "DELETE",
+        headers: { "x-admin-password": password }
+      });
+      if (res.ok) {
+        fetchBranches();
+      } else {
+        alert("Failed to delete branch");
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-900">Manage Locations</h2>
+        <button
+          onClick={() => setIsAdding(!isAdding)}
+          className="bg-red-600 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-red-700 transition"
+        >
+          {isAdding ? "Cancel" : <><Plus size={18} /> Add Location</>}
+        </button>
+      </div>
+
+      {isAdding && (
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mb-8">
+          <h3 className="text-lg font-bold mb-4">Add New Location</h3>
+          <form onSubmit={handleAdd} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Branch Name</label>
+                <input required type="text" value={name} onChange={e => setName(e.target.value)} className="w-full border rounded-lg p-2" placeholder="e.g. KARIMNAGAR" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Phone</label>
+                <input required type="text" value={phone} onChange={e => setPhone(e.target.value)} className="w-full border rounded-lg p-2" />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium mb-1">Address</label>
+                <textarea required value={address} onChange={e => setAddress(e.target.value)} className="w-full border rounded-lg p-2 h-20" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Map X Coordinate (0.0 to 1.0)</label>
+                <input required type="number" step="0.01" value={coordX} onChange={e => setCoordX(e.target.value)} className="w-full border rounded-lg p-2" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Map Y Coordinate (0.0 to 1.0)</label>
+                <input required type="number" step="0.01" value={coordY} onChange={e => setCoordY(e.target.value)} className="w-full border rounded-lg p-2" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Branch Image</label>
+                <input required type="file" accept="image/*" onChange={e => setImageFile(e.target.files[0])} className="w-full border rounded-lg p-1.5" />
+              </div>
+              <div className="flex items-center gap-2 mt-6">
+                <input type="checkbox" id="headOffice" checked={headOffice} onChange={e => setHeadOffice(e.target.checked)} className="w-5 h-5 text-red-600 rounded" />
+                <label htmlFor="headOffice" className="text-sm font-medium">Is Head Office?</label>
+              </div>
+            </div>
+            <div className="flex justify-end pt-4">
+              <button type="submit" className="bg-gray-900 text-white px-6 py-2 rounded-lg font-medium hover:bg-gray-800">Save Location</button>
+            </div>
+          </form>
         </div>
+      )}
 
-        {/* Recent Customers Table */}
-        <div className="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
-          <div className="p-6 border-b border-gray-100 flex justify-between items-center">
-            <h2 className="font-bold text-gray-900 text-lg">Recent Customer Investments</h2>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-gray-50 text-gray-500 font-medium">
-                <tr>
-                  <th className="px-6 py-4">Customer ID</th>
-                  <th className="px-6 py-4">Name</th>
-                  <th className="px-6 py-4">Scheme</th>
-                  <th className="px-6 py-4">Amount Invested</th>
-                  <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4 text-right">Action</th>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+          <table className="w-full text-left text-sm">
+            <thead className="bg-gray-50 text-gray-500 font-medium">
+              <tr>
+                <th className="px-6 py-4">Image</th>
+                <th className="px-6 py-4">Branch Name</th>
+                <th className="px-6 py-4">Phone</th>
+                <th className="px-6 py-4 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {branches.map(b => (
+                <tr key={b.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4">
+                    {b.imageUrl && <img src={b.imageUrl} alt={b.name} className="w-12 h-12 rounded object-cover" />}
+                  </td>
+                  <td className="px-6 py-4 font-semibold text-gray-900">
+                    {b.name} {b.headOffice && <span className="ml-2 bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">HQ</span>}
+                  </td>
+                  <td className="px-6 py-4 text-gray-600">{b.phone}</td>
+                  <td className="px-6 py-4 text-right">
+                    <button onClick={() => handleDelete(b.id)} className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg">
+                      <Trash2 size={18} />
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {RECENT_CUSTOMERS.map((cust) => (
-                  <tr key={cust.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 font-mono text-gray-600">{cust.id}</td>
-                    <td className="px-6 py-4 font-semibold text-gray-900">{cust.name}</td>
-                    <td className="px-6 py-4 text-gray-600">{cust.scheme}</td>
-                    <td className="px-6 py-4 font-medium text-gray-900">{cust.invested}</td>
-                    <td className="px-6 py-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        cust.status === 'Active' ? 'bg-emerald-100 text-emerald-700' :
-                        cust.status === 'Pending' ? 'bg-orange-100 text-orange-700' :
-                        'bg-blue-100 text-blue-700'
-                      }`}>
-                        {cust.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <button className="p-1 text-gray-400 hover:text-gray-900 transition-colors">
-                        <MoreVertical size={18} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+              {branches.length === 0 && (
+                <tr>
+                  <td colSpan="4" className="px-6 py-8 text-center text-gray-500">No locations found. Add one above.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
-
-      </div>
+      )}
     </div>
   );
 }
 
-function MetricCard({ title, value, trend, icon, bg }) {
-  return (
-    <div className="bg-white p-6 rounded-3xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-      <div className="flex justify-between items-start mb-4">
-        <div className={`p-3 rounded-2xl ${bg}`}>
-          {icon}
-        </div>
-        <span className="text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg text-xs font-bold">
-          {trend}
-        </span>
-      </div>
-      <div>
-        <p className="text-sm text-gray-500 font-medium mb-1">{title}</p>
-        <h3 className="text-3xl font-bold text-gray-900 tracking-tight">{value}</h3>
-      </div>
-    </div>
-  );
-}
+function GalleryManager({ password }) {
+  const [images, setImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const fileInputRef = useRef(null);
+  const [isUploading, setIsUploading] = useState(false);
 
-function InsightCard({ text }) {
+  const fetchImages = async () => {
+    try {
+      const res = await fetch("/api/cms/gallery");
+      const data = await res.json();
+      setImages(data);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchImages();
+  }, []);
+
+  const handleUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const res = await fetch("/api/cms/gallery", {
+        method: "POST",
+        headers: { "x-admin-password": password },
+        body: formData
+      });
+      if (res.ok) {
+        fetchImages();
+      } else {
+        alert("Failed to upload image");
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this gallery image?")) return;
+    try {
+      const res = await fetch(`/api/cms/gallery/${id}`, {
+        method: "DELETE",
+        headers: { "x-admin-password": password }
+      });
+      if (res.ok) {
+        fetchImages();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
-    <div className="bg-white/10 p-4 rounded-2xl border border-white/5 backdrop-blur-sm">
-      <div className="flex items-start gap-3">
-        <div className="w-2 h-2 rounded-full bg-red-400 mt-1.5 flex-shrink-0"></div>
-        <p className="text-sm text-gray-200 leading-relaxed">{text}</p>
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-900">Manage Gallery</h2>
+        <div>
+          <input type="file" accept="image/*" onChange={handleUpload} className="hidden" ref={fileInputRef} />
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isUploading}
+            className="bg-red-600 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-red-700 transition disabled:opacity-50"
+          >
+            <Upload size={18} /> {isUploading ? "Uploading..." : "Upload Image"}
+          </button>
+        </div>
       </div>
+
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+          {images.map(img => (
+            <div key={img.id} className="group relative rounded-xl overflow-hidden shadow-sm border border-gray-200 aspect-square bg-white">
+              <img src={img.imageUrl} alt="Gallery" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <button
+                  onClick={() => handleDelete(img.id)}
+                  className="bg-red-600 text-white p-3 rounded-full hover:bg-red-700 hover:scale-110 transition"
+                >
+                  <Trash2 size={20} />
+                </button>
+              </div>
+            </div>
+          ))}
+          {images.length === 0 && (
+            <div className="col-span-full py-12 text-center text-gray-500 bg-white rounded-2xl border border-gray-200 border-dashed">
+              No gallery images found. Upload your first memory above.
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
