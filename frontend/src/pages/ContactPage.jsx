@@ -4,10 +4,8 @@ import { FaPhoneAlt, FaWhatsapp, FaInstagram, FaFacebookF, FaEnvelope } from 're
 import AnimatedTelanganaMap from '../components/AnimatedTelanganaMap';
 import { branches } from '../data/branches';
 
-const defaultBranch = branches[0];
-
 export default function ContactPage() {
-  const [activeBranch, setActiveBranch] = useState(defaultBranch);
+  const [activeBranch, setActiveBranch] = useState(null);
   const hoverTimeout = useRef(null);
   const mousePos = useRef({ x: 0, y: 0 });
   const pendingBranchId = useRef(null);
@@ -20,7 +18,7 @@ export default function ContactPage() {
     if (dx > 2 || dy > 2) {
       mousePos.current = { x: e.clientX, y: e.clientY };
       
-      if (activeBranch.id !== branch.id) {
+      if (activeBranch?.id !== branch.id) {
         if (pendingBranchId.current !== branch.id) {
           pendingBranchId.current = branch.id;
           if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
@@ -44,7 +42,7 @@ export default function ContactPage() {
   const handleMouseLeaveList = () => {
     if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
     pendingBranchId.current = null;
-    setActiveBranch(defaultBranch);
+    setActiveBranch(null);
   };
 
   return (
@@ -518,10 +516,10 @@ export default function ContactPage() {
             </div>
 
             <div className="contact-map-stage">
-              <div className="contact-map-badge">Active: {activeBranch.name}</div>
+              {activeBranch && <div className="contact-map-badge">Active: {activeBranch.name}</div>}
               <div className="contact-map-canvas">
                 <AnimatedTelanganaMap
-                  activeId={activeBranch.id}
+                  activeId={activeBranch?.id}
                   onMarkerHover={(branch) => setActiveBranch(branch)}
                 />
               </div>
@@ -557,7 +555,7 @@ export default function ContactPage() {
               onMouseLeave={handleMouseLeaveList}
             >
               {branches.map((branch) => {
-                const isActive = activeBranch.id === branch.id;
+                const isActive = activeBranch?.id === branch.id;
                 return (
                   <motion.article
                     key={branch.id}
