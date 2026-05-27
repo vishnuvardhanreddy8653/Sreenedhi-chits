@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
+import PageHero from '../components/PageHero';
 
 const workPageStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap');
@@ -130,7 +131,7 @@ const workPageStyles = `
   .work-scheme {
     width: 100%;
     margin: 0 auto;
-    padding: 0 0 120px;
+    padding: 0 0 60px;
   }
 
   .work-card {
@@ -138,7 +139,7 @@ const workPageStyles = `
     height: 450px;
     width: 80%;
     max-width: 1000px;
-    margin: 200px auto;
+    margin: 100px auto;
     background-color: #ffffff;
     box-shadow: 10px 10px 60px rgba(254, 33, 33, 0.1);
     display: block; /* Removing the restrictive grid */
@@ -330,7 +331,7 @@ const workPageStyles = `
     .work-card {
       grid-template-columns: 1fr;
       width: 100%;
-      margin: 100px auto;
+      margin: 60px auto;
     }
 
     .work-card-thumb {
@@ -461,20 +462,14 @@ export default function WorkPage() {
     <div className="work-page-shell">
       <style>{workPageStyles}</style>
 
-      <section className="work-hero">
-        <div className="work-hero-content">
-          <h1>How CHITFUNDS Work</h1>
-          <p>Anyone can dream up great ideas,</p>
-          <p>but an idea is nothing until it's realized.</p>
-          <a 
-            href="#card-0" 
-            className="work-cta"
-            onClick={(e) => scrollToSection(e, 'card-0')}
-          >
-            Go Check That Out
-          </a>
-        </div>
-      </section>
+      <PageHero
+        title="How CHITFUNDS Work"
+        subtitle1="Anyone can dream up great ideas,"
+        subtitle2="but an idea is nothing until it's realized."
+        ctaText="Go Check That Out"
+        ctaHref="#card-0"
+        onCtaClick={(e) => scrollToSection(e, 'card-0')}
+      />
 
       <section id="bottom" className="work-scheme">
         {workCards.map((card, index) => {

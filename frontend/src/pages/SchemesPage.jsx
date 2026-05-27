@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, Users, TrendingUp, ChevronRight } from 'lucide-react';
+import PageHero from '../components/PageHero';
 
 const CHIT_SCHEMES = [
   { months: 50, maxBidPayable: "23,75,000", minInstallment: "32,500", maxInstallment: "50,000", minBidPayable: "15,00,000", highestDividend: "4,70,600", tag: "Most Popular" },
@@ -36,33 +37,11 @@ export default function SchemesPage() {
   return (
     <div className="bg-white">
       {/* Page Hero */}
-      <section
-        className="relative overflow-hidden min-h-[480px] flex items-center justify-center px-4 text-center border-b border-yellow-500"
-        style={{
-          background: 'radial-gradient(circle at top, #ffe149 0%, #ffe536 55%, #ffd900 100%)',
-        }}
-      >
-        <div
-          className="absolute inset-0 opacity-90"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.08), rgba(255,255,255,0.08)), url('https://srinidhichits.com/assests/about%20bg.png')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
-        <div className="relative z-10 max-w-3xl">
-          <h1 className="text-[56px] md:text-[80px] font-black tracking-[4px] leading-none mb-5 text-white drop-shadow-[15px_30px_20px_rgba(0,0,0,0.35)]">
-            AVAILABLE CHITS
-          </h1>
-          <p className="text-gray-900 max-w-2xl mx-auto leading-none text-[24px] md:text-[30px] font-bold">
-            Choose from our wide range of plans tailored for every budget.
-          </p>
-          <p className="text-gray-900 max-w-2xl mx-auto text-[24px] md:text-[30px] font-bold mt-2">
-            From ₹3,900/month to ₹1,00,000/month — there's a plan for everyone.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        title="AVAILABLE CHITS"
+        subtitle1="Choose from our wide range of plans tailored for every budget."
+        subtitle2="From ₹3,900/month to ₹1,00,000/month — there's a plan for everyone."
+      />
 
       {/* Filter Bar */}
       <div className="sticky top-16 z-30 bg-white border-b border-gray-100 px-4 py-3">
@@ -84,7 +63,7 @@ export default function SchemesPage() {
       </div>
 
       {/* Schemes Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((scheme, idx) => (
             <motion.div

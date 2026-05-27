@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import PageHero from '../components/PageHero';
 
 const IMAGES = Array.from({ length: 11 }, (_, i) => `https://srinidhichits.com/assests/Gallery/1/${i + 1}.jpg`);
 
@@ -10,47 +11,16 @@ export default function GalleryPage() {
   return (
     <div className="bg-white">
       {/* Hero Banner */}
-      <section
-        className="relative overflow-hidden min-h-[480px] flex items-center justify-center px-4 text-center border-b border-yellow-500"
-        style={{
-          background: 'radial-gradient(circle at top, #ffe149 0%, #ffe536 55%, #ffd900 100%)',
-        }}
-      >
-        <div
-          className="absolute inset-0 opacity-90"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.08), rgba(255,255,255,0.08)), url('https://srinidhichits.com/assests/about%20bg.png')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="relative z-10 max-w-3xl"
-        >
-          <h1 className="text-[56px] md:text-[80px] font-black tracking-[4px] leading-none mb-5 text-white drop-shadow-[15px_30px_20px_rgba(0,0,0,0.35)] uppercase">
-            Gallery
-          </h1>
-          <p className="text-gray-900 max-w-2xl mx-auto leading-none text-[24px] md:text-[30px] font-bold">
-            Anyone can dream up great ideas,
-          </p>
-          <p className="text-gray-900 max-w-2xl mx-auto text-[24px] md:text-[30px] font-bold mt-2">
-            but an idea is nothing until it's realized.
-          </p>
-          <a
-            href="#memories"
-            className="mt-8 inline-flex h-12 px-8 items-center justify-center rounded-full bg-[#fe2121] text-white font-black uppercase tracking-[1px] shadow-[5px_5px_18px_rgba(250,12,12,0.856)] hover:bg-red-700 transition-colors duration-300"
-          >
-            Our Memories
-          </a>
-        </motion.div>
-      </section>
+      <PageHero
+        title="Gallery"
+        subtitle1="Anyone can dream up great ideas,"
+        subtitle2="but an idea is nothing until it's realized."
+        ctaText="Our Memories"
+        ctaHref="#memories"
+      />
 
       {/* Gallery Content */}
-      <section id="memories" className="py-20 px-4 bg-gray-50 min-h-screen">
+      <section id="memories" className="py-10 px-4 bg-gray-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <motion.h2 

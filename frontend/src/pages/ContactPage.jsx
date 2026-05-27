@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { FaPhoneAlt, FaWhatsapp, FaInstagram, FaFacebookF, FaEnvelope } from 'react-icons/fa';
 import AnimatedTelanganaMap from '../components/AnimatedTelanganaMap';
 import { branches } from '../data/branches';
+import PageHero from '../components/PageHero';
 
 export default function ContactPage() {
   const [activeBranch, setActiveBranch] = useState(null);
@@ -123,7 +124,7 @@ export default function ContactPage() {
         .contact-shell {
           width: min(1200px, calc(100% - 40px));
           margin: 0 auto;
-          padding: 36px 0 110px;
+          padding: 24px 0 60px;
         }
 
         .contact-layout {
@@ -250,7 +251,7 @@ export default function ContactPage() {
         }
 
         .contact-details-panel {
-          padding: 24px 0 20px;
+          padding: 12px 0 20px;
         }
 
         .contact-details-header {
@@ -489,17 +490,13 @@ export default function ContactPage() {
         }
       `}</style>
 
-      <section className="contact-hero">
-        <div className="contact-hero__image" />
-        <div className="contact-hero__content">
-          <h1 className="contact-hero__title">OUR CONTACT</h1>
-          <p className="contact-hero__subtitle">Anyone can dream up great ideas,</p>
-          <p className="contact-hero__subtitle" style={{ marginTop: 6 }}>
-            but an idea is nothing until it's realized.
-          </p>
-          <a href="#contact-shell" className="contact-hero__button">Know Where We Are!</a>
-        </div>
-      </section>
+      <PageHero
+        title="OUR CONTACT"
+        subtitle1="Anyone can dream up great ideas,"
+        subtitle2="but an idea is nothing until it's realized."
+        ctaText="Know Where We Are!"
+        ctaHref="#contact-shell"
+      />
 
       <section id="contact-shell" className="contact-shell">
         <div className="contact-layout">
