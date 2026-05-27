@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { FaPhoneAlt, FaWhatsapp, FaInstagram, FaFacebookF, FaEnvelope } from 'react-icons/fa';
 import AnimatedTelanganaMap from '../components/AnimatedTelanganaMap';
 import { branches } from '../data/branches';
 
@@ -442,9 +443,14 @@ export default function ContactPage() {
         }
 
         .contact-footer__social a:hover {
-          background: #fe2121;
           color: #fff;
         }
+
+        .contact-footer__social a.social-phone:hover { background: #dc2626; }
+        .contact-footer__social a.social-whatsapp:hover { background: #22c55e; }
+        .contact-footer__social a.social-instagram:hover { background: #db2777; }
+        .contact-footer__social a.social-facebook:hover { background: #2563eb; }
+        .contact-footer__social a.social-mail:hover { background: #dc2626; }
 
         @media (max-width: 1024px) {
           .contact-layout {
@@ -623,11 +629,11 @@ export default function ContactPage() {
         </div>
 
         <div className="contact-footer__social">
-          <a href="tel:+916302296910" aria-label="Call Us">📞</a>
-          <a href="https://wa.me/916302296910" target="_blank" rel="noreferrer" aria-label="WhatsApp">💬</a>
-          <a href="https://instagram.com/search_to_find_my_name7" target="_blank" rel="noreferrer" aria-label="Instagram">◎</a>
-          <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">f</a>
-          <a href="mailto:contact@srinidhichits.com" aria-label="Email">✉</a>
+          <a href="tel:+916302296910" aria-label="Call Us" className="social-phone"><FaPhoneAlt size={20} /></a>
+          <a href="https://wa.me/916302296910" target="_blank" rel="noreferrer" aria-label="WhatsApp" className="social-whatsapp"><FaWhatsapp size={20} /></a>
+          <a href="https://instagram.com/search_to_find_my_name7" target="_blank" rel="noreferrer" aria-label="Instagram" className="social-instagram"><FaInstagram size={20} /></a>
+          <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="social-facebook"><FaFacebookF size={20} /></a>
+          <a href="mailto:contact@srinidhichits.com" aria-label="Email" className="social-mail"><FaEnvelope size={20} /></a>
         </div>
       </footer>
     </div>
