@@ -43,6 +43,7 @@ export default function AnimatedTelanganaMap({ onMarkerHover, onMarkerLeave, act
         </filter>
       </defs>
 
+      {/* Base Map and White Border */}
       <motion.path
         d={telanganaPath}
         fill="url(#tg-gradient)"
@@ -51,6 +52,23 @@ export default function AnimatedTelanganaMap({ onMarkerHover, onMarkerLeave, act
         initial={{ pathLength: 0 }}
         animate={{ pathLength: 1 }}
         transition={{ duration: 1.2, ease: 'easeInOut' }}
+        filter="url(#glow)"
+      />
+
+      {/* Repeating Red Tracer Line */}
+      <motion.path
+        d={telanganaPath}
+        fill="none"
+        stroke="#fe2121"
+        strokeWidth={STROKE_WIDTH * 1.5}
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: [0, 1], opacity: [0, 1, 1, 0] }}
+        transition={{ 
+          duration: 3, 
+          ease: 'easeInOut', 
+          repeat: Infinity, 
+          repeatDelay: 1
+        }}
         filter="url(#glow)"
       />
 

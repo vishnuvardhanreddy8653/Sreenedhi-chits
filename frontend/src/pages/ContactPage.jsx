@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaPhoneAlt, FaWhatsapp, FaInstagram, FaFacebookF, FaEnvelope } from 'react-icons/fa';
 import AnimatedTelanganaMap from '../components/AnimatedTelanganaMap';
@@ -10,6 +10,13 @@ export default function ContactPage() {
   const hoverTimeout = useRef(null);
   const mousePos = useRef({ x: 0, y: 0 });
   const pendingBranchId = useRef(null);
+  const itemRefs = useRef({});
+
+  useEffect(() => {
+    if (activeBranch && itemRefs.current[activeBranch.id]) {
+      itemRefs.current[activeBranch.id].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, [activeBranch]);
 
   const handleMouseMove = (e, branch) => {
     const dx = Math.abs(e.clientX - mousePos.current.x);
@@ -556,6 +563,7 @@ export default function ContactPage() {
                 return (
                   <motion.article
                     key={branch.id}
+                    ref={(el) => (itemRefs.current[branch.id] = el)}
                     className={`contact-branch-card ${isActive ? 'contact-branch-card--active' : ''}`}
                     onMouseMove={(e) => handleMouseMove(e, branch)}
                     onClick={() => handleClick(branch)}
