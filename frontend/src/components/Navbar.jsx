@@ -8,7 +8,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [hoveredTab, setHoveredTab] = useState(null);
   const location = useLocation();
-  const hideCTA = ['/', '/schemes', '/about', '/contact', '/login', '/register', '/work', '/faq', '/terms', '/privacy'].includes(location.pathname);
+  const hideCTA = ['/', '/schemes', '/about', '/gallery', '/contact', '/login', '/register', '/work', '/faq', '/terms', '/privacy'].includes(location.pathname);
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem('token');
 
@@ -22,6 +22,7 @@ export default function Navbar() {
     { to: '/', label: 'Home' },
     { to: '/about', label: 'About' },
     { to: '/schemes', label: 'Available Chits' },
+    { to: '/gallery', label: 'Gallery' },
     { to: '/contact', label: 'Contact' },
     { to: '/work', label: 'How it Works ?' },
   ];

@@ -14,6 +14,7 @@ import FaqsPage from './pages/FaqsPage';
 import TermsPage from './pages/TermsPage';
 import PrivacyPage from './pages/PrivacyPage';
 import WorkPage from './pages/WorkPage';
+import GalleryPage from './pages/GalleryPage';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/schemes" element={<SchemesPage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/faq" element={<FaqsPage />} />
             <Route path="/terms" element={<TermsPage />} />
