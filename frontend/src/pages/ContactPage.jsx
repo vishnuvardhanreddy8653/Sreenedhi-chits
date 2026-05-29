@@ -3,8 +3,19 @@ import { motion } from 'framer-motion';
 import { FaPhoneAlt, FaWhatsapp, FaInstagram, FaFacebookF, FaEnvelope } from 'react-icons/fa';
 import AnimatedTelanganaMap from '../components/AnimatedTelanganaMap';
 import PageHero from '../components/PageHero';
+import usePageContent from '../hooks/usePageContent';
+
+const DEFAULT_CONTENT = {
+  hero: {
+    title: "OUR CONTACT",
+    subtitle1: "Anyone can dream up great ideas,",
+    subtitle2: "but an idea is nothing until it's realized.",
+    ctaText: "Know Where We Are!"
+  }
+};
 
 export default function ContactPage() {
+  const { content } = usePageContent('contact', DEFAULT_CONTENT);
   const [activeBranch, setActiveBranch] = useState(null);
   const hoverTimeout = useRef(null);
   const mousePos = useRef({ x: 0, y: 0 });
@@ -510,10 +521,10 @@ export default function ContactPage() {
       `}</style>
 
       <PageHero
-        title="OUR CONTACT"
-        subtitle1="Anyone can dream up great ideas,"
-        subtitle2="but an idea is nothing until it's realized."
-        ctaText="Know Where We Are!"
+        title={content.hero.title}
+        subtitle1={content.hero.subtitle1}
+        subtitle2={content.hero.subtitle2}
+        ctaText={content.hero.ctaText}
         ctaHref="#contact-shell"
       />
 

@@ -2,8 +2,10 @@ package com.smartchitti.backend.controllers;
 
 import com.smartchitti.backend.models.Branch;
 import com.smartchitti.backend.models.GalleryImage;
+import com.smartchitti.backend.models.PageContent;
 import com.smartchitti.backend.repositories.BranchRepository;
 import com.smartchitti.backend.repositories.GalleryImageRepository;
+import com.smartchitti.backend.repositories.PageContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,9 @@ public class CmsController {
 
     @Autowired
     private GalleryImageRepository galleryImageRepository;
+
+    @Autowired
+    private PageContentRepository pageContentRepository;
 
     private final String UPLOAD_DIR = "uploads/";
 
@@ -126,5 +131,28 @@ public class CmsController {
         checkAuth(password);
         galleryImageRepository.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    // --- PAGE CONTENT ---
+
+    @GetMapping("/content/{pageName}")
+    public ResponseEntity<PageContent> getPageContent(@PathVariable String pageName) {
+        PageContent content = pageContentRepository.findByPageName(pageName)
+                .orElse(new PageContent(pageName, "{}"));
+        return ResponseEntity.ok(content);
+    }
+
+    @PutMapping("/content/{pageName}")
+    public ResponseEntity<PageContent> updatePageContent(
+            @RequestHeader(value = "x-admin-password", required = false) String password,
+            @PathVariable String pageName,
+            @RequestBody PageContent newContent) {
+        checkAuth(password);
+
+        PageContent content = pageContentRepository.findByPageName(pageName)
+                .orElse(new PageContent(pageName, "{}"));
+        content.setContentData(newContent.getContentData());
+        PageContent saved = pageContentRepository.save(content);
+        return ResponseEntity.ok(saved);
     }
 }

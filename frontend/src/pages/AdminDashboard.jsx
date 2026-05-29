@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Lock, MapPin, Image as ImageIcon, Plus, Trash2, LogOut, Upload } from 'lucide-react';
+import { Lock, MapPin, Image as ImageIcon, Plus, Trash2, LogOut, Upload, FileText, Save } from 'lucide-react';
 
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -65,7 +65,7 @@ function CMSInterface({ onLogout, password }) {
           <h1 className="text-xl font-bold text-white tracking-tight">Smart Chitti CMS</h1>
           <p className="text-sm text-gray-400 mt-1">Content Manager</p>
         </div>
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
           <button
             onClick={() => setActiveTab("locations")}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${
@@ -84,6 +84,23 @@ function CMSInterface({ onLogout, password }) {
             <ImageIcon size={20} />
             <span className="font-medium">Gallery</span>
           </button>
+
+          <div className="pt-4 pb-2">
+            <p className="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Page Content</p>
+          </div>
+          
+          {["home", "about", "schemes", "faq", "contact", "terms", "privacy", "work"].map(page => (
+            <button
+              key={page}
+              onClick={() => setActiveTab(`content_${page}`)}
+              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-colors ${
+                activeTab === `content_${page}` ? "bg-red-600 text-white" : "text-gray-300 hover:bg-gray-800"
+              }`}
+            >
+              <FileText size={18} />
+              <span className="font-medium capitalize">{page} Page</span>
+            </button>
+          ))}
         </nav>
         <div className="p-4 border-t border-gray-800">
           <button
@@ -101,6 +118,12 @@ function CMSInterface({ onLogout, password }) {
         <div className="max-w-5xl mx-auto">
           {activeTab === "locations" && <LocationsManager password={password} />}
           {activeTab === "gallery" && <GalleryManager password={password} />}
+          {activeTab.startsWith("content_") && (
+            <PageContentManager 
+              password={password} 
+              pageName={activeTab.replace("content_", "")} 
+            />
+          )}
         </div>
       </div>
     </div>
@@ -391,6 +414,124 @@ function GalleryManager({ password }) {
               No gallery images found. Upload your first memory above.
             </div>
           )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+import { DEFAULT_PAGE_CONTENTS } from '../utils/defaultContent';
+
+function PageContentManager({ password, pageName }) {
+  const [content, setContent] = useState("{}");
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    setIsLoading(true);
+    setMessage("");
+    fetch(`/api/cms/content/${pageName}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.contentData) {
+          try {
+            const parsed = JSON.parse(data.contentData);
+            // If the backend returns an empty object "{}", fall back to defaults
+            if (Object.keys(parsed).length === 0) {
+              const fallbackContent = DEFAULT_PAGE_CONTENTS[pageName] || {};
+              setContent(JSON.stringify(fallbackContent, null, 2));
+            } else {
+              setContent(JSON.stringify(parsed, null, 2));
+            }
+          } catch (e) {
+            setContent(data.contentData);
+          }
+        } else {
+          const fallbackContent = DEFAULT_PAGE_CONTENTS[pageName] || {};
+          setContent(JSON.stringify(fallbackContent, null, 2));
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        setMessage("Failed to load content.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [pageName]);
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    setMessage("");
+    
+    // Validate JSON
+    try {
+      JSON.parse(content);
+    } catch (e) {
+      setMessage("Invalid JSON format. Please fix errors before saving.");
+      setIsSaving(false);
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/cms/content/${pageName}`, {
+        method: "PUT",
+        headers: { 
+          "x-admin-password": password,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ pageName, contentData: content })
+      });
+      if (res.ok) {
+        setMessage("Content saved successfully!");
+        setTimeout(() => setMessage(""), 3000);
+      } else {
+        setMessage("Failed to save content.");
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage("An error occurred while saving.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 capitalize">{pageName} Page Content</h2>
+        <button
+          onClick={handleSave}
+          disabled={isSaving || isLoading}
+          className="bg-red-600 text-white px-6 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-red-700 transition disabled:opacity-50"
+        >
+          <Save size={18} /> {isSaving ? "Saving..." : "Save Content"}
+        </button>
+      </div>
+
+      {message && (
+        <div className={`p-4 mb-6 rounded-lg ${message.includes("success") ? "bg-green-50 text-green-800 border border-green-200" : "bg-red-50 text-red-800 border border-red-200"}`}>
+          {message}
+        </div>
+      )}
+
+      {isLoading ? (
+        <p>Loading content...</p>
+      ) : (
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+          <div className="p-4 bg-gray-50 border-b border-gray-200">
+            <p className="text-sm text-gray-600">
+              Edit the JSON content below to update the text, arrays, and images on the {pageName} page. 
+              Ensure the keys exactly match what the frontend expects.
+            </p>
+          </div>
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            className="w-full h-[600px] p-6 font-mono text-sm outline-none resize-y"
+            spellCheck="false"
+          />
         </div>
       )}
     </div>

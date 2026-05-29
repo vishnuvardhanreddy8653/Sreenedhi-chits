@@ -2,34 +2,42 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, Users, TrendingUp, ChevronRight } from 'lucide-react';
 import PageHero from '../components/PageHero';
+import usePageContent from '../hooks/usePageContent';
 
-const CHIT_SCHEMES = [
-  { months: 50, maxBidPayable: "23,75,000", minInstallment: "32,500", maxInstallment: "50,000", minBidPayable: "15,00,000", highestDividend: "4,70,600", tag: "Most Popular" },
-  { months: 25, maxBidPayable: "23,75,000", minInstallment: "75,000", maxInstallment: "1,00,000", minBidPayable: "17,50,000", highestDividend: "2,54,200", tag: "High Value" },
-  { months: 50, maxBidPayable: "19,00,000", minInstallment: "26,000", maxInstallment: "40,000", minBidPayable: "12,00,000", highestDividend: null, tag: "" },
-  { months: 50, maxBidPayable: "14,25,000", minInstallment: "19,500", maxInstallment: "30,000", minBidPayable: "9,00,000", highestDividend: null, tag: "" },
-  { months: 30, maxBidPayable: "14,25,000", minInstallment: "35,000", maxInstallment: "50,000", minBidPayable: "9,75,000", highestDividend: "1,79,342", tag: "" },
-  { months: 50, maxBidPayable: "9,50,000", minInstallment: "13,000", maxInstallment: "20,000", minBidPayable: "6,00,000", highestDividend: "1,79,348", tag: "" },
-  { months: 40, maxBidPayable: "9,50,000", minInstallment: "17,500", maxInstallment: "25,000", minBidPayable: "6,50,000", highestDividend: "1,41,452", tag: "" },
-  { months: 25, maxBidPayable: "9,50,000", minInstallment: "30,000", maxInstallment: "40,000", minBidPayable: "7,00,000", highestDividend: "83,296", tag: "" },
-  { months: 30, maxBidPayable: "5,70,000", minInstallment: "14,000", maxInstallment: "20,000", minBidPayable: "3,90,000", highestDividend: "80,450", tag: "Great Starter" },
-  { months: 50, maxBidPayable: "4,75,000", minInstallment: "6,500", maxInstallment: "10,000", minBidPayable: "3,00,000", highestDividend: "92,150", tag: "" },
-  { months: 40, maxBidPayable: "4,75,000", minInstallment: "8,750", maxInstallment: "12,500", minBidPayable: "3,25,000", highestDividend: "60,119", tag: "" },
-  { months: 25, maxBidPayable: "4,75,000", minInstallment: "15,000", maxInstallment: "20,000", minBidPayable: "3,50,000", highestDividend: "47,468", tag: "" },
-  { months: 50, maxBidPayable: "2,85,000", minInstallment: "3,900", maxInstallment: "6,000", minBidPayable: "1,80,000", highestDividend: "49,590", tag: "" },
-  { months: 30, maxBidPayable: "2,85,000", minInstallment: "7,000", maxInstallment: "10,000", minBidPayable: "1,95,000", highestDividend: "30,900", tag: "" },
-  { months: 40, maxBidPayable: "2,85,000", minInstallment: "5,250", maxInstallment: "7,500", minBidPayable: "1,95,000", highestDividend: "42,310", tag: "" },
-  { months: 50, maxBidPayable: "2,37,500", minInstallment: "3,250", maxInstallment: "5,000", minBidPayable: "1,50,000", highestDividend: "42,300", tag: "" },
-  { months: 50, maxBidPayable: "1,90,000", minInstallment: "2,600", maxInstallment: "4,000", minBidPayable: "1,20,000", highestDividend: "27,380", tag: "" },
-  { months: 25, maxBidPayable: "1,90,000", minInstallment: "6,000", maxInstallment: "8,000", minBidPayable: "1,40,000", highestDividend: "8,888", tag: "" },
-];
-
-const DURATION_FILTERS = ['All', '25 Months', '30 Months', '40 Months', '50 Months'];
+const DEFAULT_CONTENT = {
+  hero: {
+    title: "AVAILABLE CHITS",
+    subtitle1: "Choose from our wide range of plans tailored for every budget.",
+    subtitle2: "From ₹3,900/month to ₹1,00,000/month — there's a plan for everyone."
+  },
+  durationFilters: ['All', '25 Months', '30 Months', '40 Months', '50 Months'],
+  schemes: [
+    { months: 50, maxBidPayable: "23,75,000", minInstallment: "32,500", maxInstallment: "50,000", minBidPayable: "15,00,000", highestDividend: "4,70,600", tag: "Most Popular" },
+    { months: 25, maxBidPayable: "23,75,000", minInstallment: "75,000", maxInstallment: "1,00,000", minBidPayable: "17,50,000", highestDividend: "2,54,200", tag: "High Value" },
+    { months: 50, maxBidPayable: "19,00,000", minInstallment: "26,000", maxInstallment: "40,000", minBidPayable: "12,00,000", highestDividend: null, tag: "" },
+    { months: 50, maxBidPayable: "14,25,000", minInstallment: "19,500", maxInstallment: "30,000", minBidPayable: "9,00,000", highestDividend: null, tag: "" },
+    { months: 30, maxBidPayable: "14,25,000", minInstallment: "35,000", maxInstallment: "50,000", minBidPayable: "9,75,000", highestDividend: "1,79,342", tag: "" },
+    { months: 50, maxBidPayable: "9,50,000", minInstallment: "13,000", maxInstallment: "20,000", minBidPayable: "6,00,000", highestDividend: "1,79,348", tag: "" },
+    { months: 40, maxBidPayable: "9,50,000", minInstallment: "17,500", maxInstallment: "25,000", minBidPayable: "6,50,000", highestDividend: "1,41,452", tag: "" },
+    { months: 25, maxBidPayable: "9,50,000", minInstallment: "30,000", maxInstallment: "40,000", minBidPayable: "7,00,000", highestDividend: "83,296", tag: "" },
+    { months: 30, maxBidPayable: "5,70,000", minInstallment: "14,000", maxInstallment: "20,000", minBidPayable: "3,90,000", highestDividend: "80,450", tag: "Great Starter" },
+    { months: 50, maxBidPayable: "4,75,000", minInstallment: "6,500", maxInstallment: "10,000", minBidPayable: "3,00,000", highestDividend: "92,150", tag: "" },
+    { months: 40, maxBidPayable: "4,75,000", minInstallment: "8,750", maxInstallment: "12,500", minBidPayable: "3,25,000", highestDividend: "60,119", tag: "" },
+    { months: 25, maxBidPayable: "4,75,000", minInstallment: "15,000", maxInstallment: "20,000", minBidPayable: "3,50,000", highestDividend: "47,468", tag: "" },
+    { months: 50, maxBidPayable: "2,85,000", minInstallment: "3,900", maxInstallment: "6,000", minBidPayable: "1,80,000", highestDividend: "49,590", tag: "" },
+    { months: 30, maxBidPayable: "2,85,000", minInstallment: "7,000", maxInstallment: "10,000", minBidPayable: "1,95,000", highestDividend: "30,900", tag: "" },
+    { months: 40, maxBidPayable: "2,85,000", minInstallment: "5,250", maxInstallment: "7,500", minBidPayable: "1,95,000", highestDividend: "42,310", tag: "" },
+    { months: 50, maxBidPayable: "2,37,500", minInstallment: "3,250", maxInstallment: "5,000", minBidPayable: "1,50,000", highestDividend: "42,300", tag: "" },
+    { months: 50, maxBidPayable: "1,90,000", minInstallment: "2,600", maxInstallment: "4,000", minBidPayable: "1,20,000", highestDividend: "27,380", tag: "" },
+    { months: 25, maxBidPayable: "1,90,000", minInstallment: "6,000", maxInstallment: "8,000", minBidPayable: "1,40,000", highestDividend: "8,888", tag: "" },
+  ]
+};
 
 export default function SchemesPage() {
+  const { content } = usePageContent('schemes', DEFAULT_CONTENT);
   const [filter, setFilter] = useState('All');
 
-  const filtered = CHIT_SCHEMES.filter(s => {
+  const filtered = content.schemes.filter(s => {
     if (filter === 'All') return true;
     return s.months === parseInt(filter);
   });
@@ -38,16 +46,16 @@ export default function SchemesPage() {
     <div className="bg-white">
       {/* Page Hero */}
       <PageHero
-        title="AVAILABLE CHITS"
-        subtitle1="Choose from our wide range of plans tailored for every budget."
-        subtitle2="From ₹3,900/month to ₹1,00,000/month — there's a plan for everyone."
+        title={content.hero.title}
+        subtitle1={content.hero.subtitle1}
+        subtitle2={content.hero.subtitle2}
       />
 
       {/* Filter Bar */}
       <div className="sticky top-16 z-30 bg-white border-b border-gray-100 px-4 py-3">
         <div className="max-w-7xl mx-auto flex items-center gap-3 overflow-x-auto">
           <span className="text-sm font-medium text-gray-500 whitespace-nowrap">Filter by Duration:</span>
-          {DURATION_FILTERS.map(f => (
+          {content.durationFilters.map(f => (
             <button
               key={f}
               onClick={() => setFilter(f)}

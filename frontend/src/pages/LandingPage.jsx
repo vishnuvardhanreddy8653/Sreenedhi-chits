@@ -1,17 +1,42 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import logo from '../assets/logo.png';
+import usePageContent from '../hooks/usePageContent';
 
-const companyData = [
-  { label: "Branches", value: "12+", icon: "🏢" },
-  { label: "Employees", value: "1000+", icon: "👥" },
-  { label: "Satisfied Customers", value: "12K+", icon: "😊" },
-  { label: "Active Chits", value: "15K+", icon: "📋" },
-  { label: "Cities Covered", value: "10+", icon: "🗺️" },
-  { label: "Success Rate", value: "99.5%", icon: "⭐" }
-];
+const DEFAULT_CONTENT = {
+  companyData: [
+    { label: "Branches", value: "12+", icon: "🏢" },
+    { label: "Employees", value: "1000+", icon: "👥" },
+    { label: "Satisfied Customers", value: "12K+", icon: "😊" },
+    { label: "Active Chits", value: "15K+", icon: "📋" },
+    { label: "Cities Covered", value: "10+", icon: "🗺️" },
+    { label: "Success Rate", value: "99.5%", icon: "⭐" }
+  ],
+  hero: {
+    titleSpan: "శ్రీనిధి చిట్స్",
+    description: "Smart Chitti provides you with reliable and high-return chit fund plans. Start saving seamlessly with our trusted financial ecosystem.",
+    cta1: "Start Saving Now",
+    cta2: "View Available Plans"
+  },
+  featuresSection: {
+    title: "Why Choose Smart Chitti?",
+    subtitle: "Experience the perfect blend of traditional savings and modern technology.",
+    features: [
+      { title: "High Returns", desc: "Maximize your savings with our optimized and secure chit plans.", icon: "💰" },
+      { title: "100% Transparent", desc: "Track every payment and auction from your personalized dashboard.", icon: "🔍" },
+      { title: "Trusted & Secure", desc: "Your investments are protected by industry-leading security protocols.", icon: "🛡️" }
+    ]
+  },
+  bottomCta: {
+    title: "Ready to transform your savings?",
+    subtitle: "Join thousands of smart investors who trust us with their financial goals.",
+    buttonText: "Create Free Account"
+  }
+};
 
 export default function LandingPage() {
+  const { content } = usePageContent('home', DEFAULT_CONTENT);
+
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, staggerChildren: 0.2 } }
@@ -40,7 +65,7 @@ export default function LandingPage() {
       {/* Company Stats Banner */}
       <div className="w-full overflow-hidden bg-gradient-to-r from-[#ffde21] to-yellow-100 py-4 border-b border-yellow-400 shadow-sm">
         <div className="flex animate-ticker">
-          {[...companyData, ...companyData].map((stat, idx) => (
+          {[...content.companyData, ...content.companyData].map((stat, idx) => (
             <div key={idx} className="flex items-center gap-3 px-8 border-r border-yellow-300 last:border-0 whitespace-nowrap">
               <span className="text-2xl">{stat.icon}</span>
               <div>
@@ -65,17 +90,17 @@ export default function LandingPage() {
               <img src={logo} alt="Srinidhi Chits Logo" className="h-32 md:h-48 w-auto object-contain drop-shadow-md" />
             </motion.div>
             <motion.h1 variants={itemVariants} className="text-6xl md:text-8xl font-extrabold text-gray-900 tracking-tight mb-8 leading-normal py-4">
-              <span className="text-red-600 drop-shadow-sm py-4 inline-block">శ్రీనిధి చిట్స్</span>
+              <span className="text-red-600 drop-shadow-sm py-4 inline-block">{content.hero.titleSpan}</span>
             </motion.h1>
             <motion.p variants={itemVariants} className="text-xl text-gray-900 font-medium mb-10 leading-relaxed">
-              Smart Chitti provides you with reliable and high-return chit fund plans. Start saving seamlessly with our trusted financial ecosystem.
+              {content.hero.description}
             </motion.p>
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center gap-4">
               <Link to="/register" className="bg-red-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-red-700 hover:shadow-xl transition-all transform hover:-translate-y-1">
-                Start Saving Now
+                {content.hero.cta1}
               </Link>
               <Link to="/schemes" className="bg-white border border-gray-300 text-gray-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-50 hover:border-red-600 transition-all">
-                View Available Plans
+                {content.hero.cta2}
               </Link>
             </motion.div>
           </motion.div>
@@ -86,16 +111,12 @@ export default function LandingPage() {
       <section className="bg-white py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 border-b-4 border-[#ffde21] inline-block pb-2 px-4 uppercase tracking-wide">Why Choose Smart Chitti?</h2>
-            <p className="mt-6 text-gray-700 font-medium max-w-2xl mx-auto">Experience the perfect blend of traditional savings and modern technology.</p>
+            <h2 className="text-3xl font-bold text-gray-900 border-b-4 border-[#ffde21] inline-block pb-2 px-4 uppercase tracking-wide">{content.featuresSection.title}</h2>
+            <p className="mt-6 text-gray-700 font-medium max-w-2xl mx-auto">{content.featuresSection.subtitle}</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { title: "High Returns", desc: "Maximize your savings with our optimized and secure chit plans.", icon: "💰" },
-              { title: "100% Transparent", desc: "Track every payment and auction from your personalized dashboard.", icon: "🔍" },
-              { title: "Trusted & Secure", desc: "Your investments are protected by industry-leading security protocols.", icon: "🛡️" }
-            ].map((feature, idx) => (
+            {content.featuresSection.features.map((feature, idx) => (
               <motion.div 
                 key={idx}
                 initial={{ opacity: 0, y: 30 }}
@@ -117,10 +138,10 @@ export default function LandingPage() {
       <section className="py-24 max-w-5xl mx-auto px-4">
         <div className="bg-[#ffde21] rounded-[3rem] p-12 text-center relative overflow-hidden shadow-xl border border-yellow-500">
           <div className="absolute top-0 left-0 w-full h-full opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-red-500 via-transparent to-transparent"></div>
-          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 relative z-10">Ready to transform your savings?</h2>
-          <p className="text-gray-800 font-medium mb-10 text-lg relative z-10">Join thousands of smart investors who trust us with their financial goals.</p>
+          <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 relative z-10">{content.bottomCta.title}</h2>
+          <p className="text-gray-800 font-medium mb-10 text-lg relative z-10">{content.bottomCta.subtitle}</p>
           <Link to="/register" className="inline-block bg-red-600 text-white px-8 py-4 rounded-full font-bold hover:bg-red-700 shadow-md transition-all hover:-translate-y-1 relative z-10">
-            Create Free Account
+            {content.bottomCta.buttonText}
           </Link>
         </div>
       </section>

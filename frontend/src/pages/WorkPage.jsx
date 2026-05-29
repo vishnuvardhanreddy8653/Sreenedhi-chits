@@ -2,6 +2,50 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import PageHero from '../components/PageHero';
+import usePageContent from '../hooks/usePageContent';
+
+const DEFAULT_CONTENT = {
+  hero: {
+    title: "How CHITFUNDS Work",
+    subtitle1: "Anyone can dream up great ideas,",
+    subtitle2: "but an idea is nothing until it's realized.",
+    ctaText: "Go Check That Out"
+  },
+  workCards: [
+    {
+      title: 'Chit Subscription',
+      paragraphs: [
+        'A ChitGroup is formed by the chitfund company with the chit Value and No. of Subscribers. (Which doesn’t change throughout the chit completion)',
+        'The amount to be saved every month by the Subscriber is equals to Chit value divided by No of person’s i.e. 10,00,000/50 = 20,000.',
+        'The maximum monthly Subscription Amount to be paid by a Subscriber will be 20,000 for above example chit.'
+      ]
+    },
+    {
+      title: 'Bid Amount',
+      paragraphs: [
+        'The Subscriber does not always pay the entire Subscription amount every month there will be some amount deducted as Divedend.',
+        'The maximum bid permitted ranges from 30-40% from chit value. i.e., The maximum deduction will be around 30% - 40% of chit value.',
+        'Assume that a Subscriber has bid 35% of the chit value. 35% of 10,00,000 is 3,50,000. This amount is known as chit discount.'
+      ]
+    },
+    {
+      title: 'Dividend',
+      paragraphs: [
+        'The Company Charges 5% of chit value as commission from example that would amount to 50,000. This amount is deducted from Chit Discount i.e. 3,50,000-50,000=3,00,000. This amount is equally distribution among the subscribers of the group.',
+        'In the example, 3,00,000 would be divided equally among 50 subscribers. Each subscriber would get a discount of 3,00,000/50 = 6000. This amount is known as Dividend. In the next month, all subscribers would have to only pay 14,000 instead of 20,000. This is because they have earned a chit discount of 6000.'
+      ]
+    },
+    {
+      title: 'Advantages of ChitFunds',
+      paragraphs: [
+        'Chit fund gives the flexibility to borrow and save.',
+        'You can get a chance to borrow money just by paying first monthly installment.',
+        'The non-prized subscriber who is a saving member up to the last installments gets a dividend which is comparatively higher than the interest that are accrued by way of other Deposit Schemes.',
+        'You need disadvantaged for which purpose you will be using the prize money.'
+      ]
+    }
+  ]
+};
 
 const workPageStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap');
@@ -439,7 +483,18 @@ const UpIcon = () => (
 );
 
 export default function WorkPage() {
+  const { content } = usePageContent('work', DEFAULT_CONTENT);
   const [showTop, setShowTop] = useState(false);
+
+  // Merge dynamic text with static assets/metadata
+  const displayCards = workCards.map((card, index) => {
+    const dynamicCard = content.workCards && content.workCards[index] ? content.workCards[index] : card;
+    return {
+      ...card,
+      title: dynamicCard.title || card.title,
+      paragraphs: dynamicCard.paragraphs || card.paragraphs
+    };
+  });
 
   useEffect(() => {
     const handleScroll = () => setShowTop(window.scrollY > 240);
@@ -463,17 +518,17 @@ export default function WorkPage() {
       <style>{workPageStyles}</style>
 
       <PageHero
-        title="How CHITFUNDS Work"
-        subtitle1="Anyone can dream up great ideas,"
-        subtitle2="but an idea is nothing until it's realized."
-        ctaText="Go Check That Out"
+        title={content.hero.title}
+        subtitle1={content.hero.subtitle1}
+        subtitle2={content.hero.subtitle2}
+        ctaText={content.hero.ctaText}
         ctaHref="#card-0"
         onCtaClick={(e) => scrollToSection(e, 'card-0')}
       />
 
       <section id="bottom" className="work-scheme">
-        {workCards.map((card, index) => {
-          const nextCardId = index < workCards.length - 1 ? `card-${index + 1}` : 'bottom';
+        {displayCards.map((card, index) => {
+          const nextCardId = index < displayCards.length - 1 ? `card-${index + 1}` : 'bottom';
           
           return (
             <article className="work-card" key={card.id} id={`card-${index}`}>
